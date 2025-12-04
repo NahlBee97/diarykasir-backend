@@ -11,6 +11,7 @@ const port = process.env.PORT || 5000;
 
 // Routes
 import authRoutes from "./routes/authRoutes";
+import productRoutes from "./routes/productRoutes";
 
 // cors
 app.use(
@@ -27,6 +28,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
 
 // Error Handler
 app.use(errorHandler);

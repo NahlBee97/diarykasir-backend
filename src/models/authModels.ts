@@ -3,7 +3,7 @@ import { prisma } from "../lib/prisma";
 
 export const authModels = {
   findUser: async (role: Role, pin: string) => {
-    const user = await prisma.user.findFirst({
+    const user = await prisma.users.findFirst({
       where: {
         role, pin
       },

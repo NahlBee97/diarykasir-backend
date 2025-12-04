@@ -17,18 +17,16 @@ enum OrderStatus {
   VOID
 }
 
-model User {
+model users {
   id        Int      @id @default(autoincrement())
   name      String
   pin       String   @unique 
   role      Role     @default(CASHIER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@map("users")
 }
 
-model Product {
+model products {
   id             Int      @id @default(autoincrement())
   name           String
   category       String   
@@ -40,12 +38,10 @@ model Product {
   updatedAt      DateTime @updatedAt
 
   // Relations
-  orderItems     OrderItem[]
+  orderItems     orderItems[]
+  }
 
-  @@map("products")
-}
-
-model Order {
+model orders {
   id            Int         @id @default(autoincrement())
   totalAmount   Decimal     @db.Decimal(15, 2)
   paymentCash   Decimal     @db.Decimal(15, 2)
@@ -54,22 +50,18 @@ model Order {
   createdAt     DateTime    @default(now())
 
   // Relations
-  items         OrderItem[]
-
-  @@map("orders")
+  items         orderItems[]
 }
 
-model OrderItem {
+model orderItems {
   id        Int     @id @default(autoincrement())
   quantity  Int
   unitPrice Decimal @db.Decimal(15, 2)
   
   // Relations
   orderId   Int
-  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order     orders   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   
   productId Int
-  product   Product @relation(fields: [productId], references: [id])
-
-  @@map("order_items")
+  product   products @relation(fields: [productId], references: [id])
 }
