@@ -1,23 +1,25 @@
-export interface INewProduct {
+import { Decimal } from "@prisma/client/runtime/client";
+
+export interface NewProduct {
   name: string;
   category: string;
-  price: number;
+  price: Decimal;
   stock: number;
   image?: string | null;
 }
 
-export interface IUpdateProduct {
+export interface UpdateProduct {
   name?: string | null;
   category?: string | null;
-  price?: number | null;
+  price?: Decimal | null;
   stock?: number | null;
 }
 
-export interface IProduct {
-  id: string;
+export interface Product {
+  id: number;
   name: string;
   category: string;
-  price: number;
+  price: Decimal;
   stock: number;
   image?: string | null;
 }

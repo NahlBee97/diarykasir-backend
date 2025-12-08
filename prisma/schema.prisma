@@ -26,6 +26,7 @@ model users {
   updatedAt DateTime @updatedAt
 
   // Relations
+  orders    orders[]
   cart     carts[]
 }
 
@@ -35,6 +36,7 @@ model products {
   category       String   
   price          Decimal  @db.Decimal(15, 2) 
   stock          Int      @default(0) 
+  sale           Int      @default(0)
   image          String?  
   isActive       Boolean  @default(true) 
   createdAt      DateTime @default(now())
@@ -72,6 +74,7 @@ model cartItems {
 
 model orders {
   id            Int         @id @default(autoincrement())
+  userId        Int
   totalAmount   Decimal     @db.Decimal(15, 2)
   paymentCash   Decimal     @db.Decimal(15, 2)
   paymentChange Decimal     @db.Decimal(15, 2)
@@ -79,6 +82,7 @@ model orders {
   createdAt     DateTime    @default(now())
 
   // Relations
+  user         users      @relation(fields: [userId], references: [id])
   items         orderItems[]
 }
 

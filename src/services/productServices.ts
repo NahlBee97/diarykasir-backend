@@ -1,4 +1,4 @@
-import { INewProduct, IUpdateProduct } from "../interfaces/productInterface";
+import { NewProduct, UpdateProduct } from "../interfaces/productInterface";
 import { prisma } from "../lib/prisma";
 import { AppError } from "../utils/appError";
 
@@ -31,7 +31,7 @@ export const productService = {
     }
   },
 
-  create: async (productData: INewProduct) => {
+  create: async (productData: NewProduct) => {
     try {
       const newProduct = await prisma.products.create({
         data: productData,
@@ -42,7 +42,7 @@ export const productService = {
     }
   },
 
-  update: async (productId: number, productData: IUpdateProduct) => {
+  update: async (productId: number, productData: UpdateProduct) => {
     try {
       const { name, price, stock, category } = productData;
 

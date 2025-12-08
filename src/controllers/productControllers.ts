@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { INewProduct, IUpdateProduct } from "../interfaces/productInterface";
+import { NewProduct, UpdateProduct } from "../interfaces/productInterface";
 import { productService } from "../services/productServices";
 
 export const productController = {
@@ -29,7 +29,7 @@ export const productController = {
 
   create: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const productData = req.body as INewProduct;
+      const productData = req.body as NewProduct;
       const newProduct = await productService.create(productData);
       res
         .status(201)
@@ -42,7 +42,7 @@ export const productController = {
   update: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const productId = req.params.id as string;
-      const productData = req.body as IUpdateProduct;
+      const productData = req.body as UpdateProduct;
       const updatedProduct = await productService.update(
         Number(productId),
         productData
