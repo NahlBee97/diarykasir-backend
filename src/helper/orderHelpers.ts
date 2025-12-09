@@ -53,7 +53,7 @@ export async function createOrderTransaction(orderData: NewOrder, cart: Cart) {
       }
 
       // 2. Create order items
-      const orderItemsData = cart.items?.map((item: CartItem) => ({
+      const orderItems = cart.items?.map((item: CartItem) => ({
         orderId: order.id,
         productId: item.productId,
         quantity: item.quantity,
@@ -61,7 +61,7 @@ export async function createOrderTransaction(orderData: NewOrder, cart: Cart) {
       }));
 
       await tx.orderItems.createMany({
-        data: orderItemsData ?? [],
+        data: orderItems ?? [],
       });
 
       // 3. Update product stock levels
@@ -93,7 +93,7 @@ export async function createOrderTransaction(orderData: NewOrder, cart: Cart) {
         where: { cartId: cart.id },
       });
 
-      return order;
+      return {order, orderItems: cart.items};
     });
   } catch (error) {
     throw error;
