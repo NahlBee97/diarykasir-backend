@@ -34,9 +34,19 @@ export const orderController = {
 
   getAllOrders: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const orders = await OrderService.getAllOrder();
+      const orders = await OrderService.getAllOrders();
 
       res.status(200).json({ message: "Get all orders successfully", orders });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  getTodayOrders: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const orders = await OrderService.getTodayOrders();
+
+      res.status(200).json({ message: "Get today orders successfully", orders });
     } catch (error) {
       next(error);
     }

@@ -48,10 +48,28 @@ export const OrderService = {
     }
   },
 
-  getAllOrder: async () => {
+  getAllOrders: async () => {
     try {
       const orders = await prisma.orders.findMany({
         include: { user: true },
+        orderBy: { createdAt: "desc" },
+      });
+
+      return orders;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  getTodayOrders: async () => {
+    try {
+      const orders = await prisma.orders.findMany({
+        where: {
+          createdAt: {
+            gte: new Date(new Date().setHours(0, 0, 0, 0)),
+          },
+        },
+        include: { user: true, items: { include: { product: true } } },
         orderBy: { createdAt: "desc" },
       });
 

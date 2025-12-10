@@ -5,6 +5,7 @@ import { orderController } from "../controllers/orderControllers";
 const router = Router();
 
 router.get("/", VerifyToken, orderController.getAllOrders);
+router.get("/today", VerifyToken, orderController.getTodayOrders);
 router.get(
   "/order-items/:orderId",
   VerifyToken,
