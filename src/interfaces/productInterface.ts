@@ -13,6 +13,7 @@ export interface UpdateProduct {
   category?: string | null;
   price?: Decimal | null;
   stock?: number | null;
+  image?: string | null;
 }
 
 export interface Product {
