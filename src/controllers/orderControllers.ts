@@ -21,8 +21,10 @@ export const orderController = {
   ) => {
     try {
       const orderId = req.params.orderId as string;
-      
-      const orderItems = await OrderService.getOrderItemsByOrderId(Number(orderId));
+
+      const orderItems = await OrderService.getOrderItemsByOrderId(
+        Number(orderId)
+      );
 
       res
         .status(200)
@@ -46,7 +48,21 @@ export const orderController = {
     try {
       const orders = await OrderService.getTodayOrders();
 
-      res.status(200).json({ message: "Get today orders successfully", orders });
+      res
+        .status(200)
+        .json({ message: "Get today orders successfully", orders });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  getOrderSummary: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const summary = await OrderService.getOrderSummary();
+
+      res
+        .status(200)
+        .json({ message: "Get order summary successfully", summary });
     } catch (error) {
       next(error);
     }

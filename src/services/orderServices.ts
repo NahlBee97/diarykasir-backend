@@ -66,6 +66,46 @@ export const OrderService = {
     }
   },
 
+  getOrderSummary: async () => {
+    try {
+      const ordersData = await prisma.orders.aggregate({
+        _sum: {
+          totalAmount: true,
+        },
+      });
+
+      const totalRevenue = Number(ordersData._sum.totalAmount);
+
+      const salesData = await prisma.orders.aggregate({
+        _count: {
+          id: true,
+        },
+      });
+
+      const totalSales = salesData ? salesData._count.id : 0;
+
+      const productData = await prisma.products.aggregate({
+        _sum: {
+          sale: true,
+        },
+      });
+
+      const itemsSold = productData ? productData._sum.sale : 0;
+      const averageSaleValue = totalRevenue/totalSales
+
+      const summary = {
+        totalRevenue,
+        totalSales,
+        averageSaleValue,
+        itemsSold,
+      }
+
+      return summary;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   getTodayOrders: async () => {
     try {
       const orders = await prisma.orders.findMany({

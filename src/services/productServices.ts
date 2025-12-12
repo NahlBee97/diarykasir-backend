@@ -17,6 +17,21 @@ export const productService = {
     }
   },
 
+  getTopProducts: async () => {
+    try {
+      const products = await prisma.products.findMany({
+        take: 5,
+        orderBy: {
+          sale: "desc",
+        },
+      });
+
+      return products;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   findById: async (productId: number) => {
     try {
       const product = await prisma.products.findUnique({

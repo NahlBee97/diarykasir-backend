@@ -15,6 +15,18 @@ export const productController = {
     }
   },
 
+  getTopProducts: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const products = await productService.getTopProducts();
+
+      res
+        .status(200)
+        .json({ message: "Products retrieved successfully", products });
+    } catch (error) {
+      next(error);
+    }
+  },
+
   findById: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const productId = req.params.id as string;
