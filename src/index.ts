@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { errorHandler } from "./middlewares/errorHandler";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path"
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use(express.static(path.join(process.cwd(), "public")));
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Diary Kasir Backend Connected");

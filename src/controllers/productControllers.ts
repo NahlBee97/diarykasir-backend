@@ -42,7 +42,16 @@ export const productController = {
   create: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const productData = req.body as NewProduct;
-      const newProduct = await productService.create(productData);
+
+      const file = req.file;
+
+      if (!file) {
+        return res.status(400).json({ message: "Product image is required." });
+      }
+
+      const imageUrl = `/uploads/products/${file.filename}`;
+
+      const newProduct = await productService.create({...productData, stock: Number(productData.stock)}, imageUrl);
       res
         .status(201)
         .json({ message: "Product created successfully", newProduct });
@@ -55,9 +64,14 @@ export const productController = {
     try {
       const productId = req.params.id as string;
       const productData = req.body as UpdateProduct;
+      const file = req.file;
+
+      const imageUrl = file ? `/uploads/products/${file?.filename}` : null;
+
       const updatedProduct = await productService.update(
         Number(productId),
-        productData
+        {...productData, stock: Number(productData.stock)},
+        imageUrl
       );
       res
         .status(200)

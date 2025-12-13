@@ -46,10 +46,10 @@ export const productService = {
     }
   },
 
-  create: async (productData: NewProduct) => {
+  create: async (productData: NewProduct, imageUrl: string) => {
     try {
       const newProduct = await prisma.products.create({
-        data: productData,
+        data: { ...productData, image: imageUrl },
       });
       return newProduct;
     } catch (error) {
@@ -57,7 +57,7 @@ export const productService = {
     }
   },
 
-  update: async (productId: number, productData: UpdateProduct) => {
+  update: async (productId: number, productData: UpdateProduct, imageUrl?: string | null) => {
     try {
       const { name, price, stock, category } = productData;
 
@@ -74,6 +74,7 @@ export const productService = {
           price: price || existingProduct.price,
           stock: stock || existingProduct.stock,
           category: category || existingProduct.category,
+          image: imageUrl ? imageUrl : existingProduct.image
         },
       });
 

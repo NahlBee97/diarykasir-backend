@@ -3,7 +3,7 @@ import { Decimal } from "@prisma/client/runtime/client";
 export interface NewProduct {
   name: string;
   category: string;
-  price: Decimal;
+  price: string;
   stock: number;
   image?: string | null;
 }
@@ -11,7 +11,7 @@ export interface NewProduct {
 export interface UpdateProduct {
   name?: string | null;
   category?: string | null;
-  price?: Decimal | null;
+  price?: string | null;
   stock?: number | null;
   image?: string | null;
 }
