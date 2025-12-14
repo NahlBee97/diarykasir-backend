@@ -48,9 +48,27 @@ export const OrderService = {
     }
   },
 
-  getAllOrders: async () => {
+  // Update the function signature to accept a page number
+  getAllOrders: async (start: string, end: string, page: number = 1) => {
     try {
+      const TAKE = 10; // Number of items per page
+
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+
+      endDate.setHours(23, 59, 59, 999);
+
+      // Calculate how many records to skip based on the page number
+      const SKIP = (page - 1) * TAKE;
+
+      // --- Query for the Paginated Orders ---
       const orders = await prisma.orders.findMany({
+        where: {
+          createdAt: {
+            gte: startDate,
+            lte: endDate,
+          },
+        },
         include: {
           user: true,
           items: {
@@ -58,50 +76,107 @@ export const OrderService = {
           },
         },
         orderBy: { createdAt: "desc" },
+        // **Pagination Options**
+        take: TAKE, // Limit the number of records returned
+        skip: SKIP, // Offset the records based on the page number
       });
 
-      return orders;
+      // --- Query for the Total Count ---
+      // You need the total count to calculate the number of pages on the frontend
+      const totalCount = await prisma.orders.count({
+        where: {
+          createdAt: {
+            gte: startDate,
+            lte: endDate,
+          },
+        },
+      });
+
+      // Return both the data and the total count
+      return {
+        orders: orders,
+        totalOrders: totalCount,
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / TAKE),
+      };
     } catch (error) {
+      console.error("Error fetching paginated orders:", error);
       throw error;
     }
   },
 
-  getOrderSummary: async () => {
+  // Assuming your Prisma client is initialized and accessible as 'prisma'
+
+  getOrderSummary: async (start: string, end: string) => {
     try {
-      const ordersData = await prisma.orders.aggregate({
+      const startDate = new Date(start);
+      const baseEndDate = new Date(end);
+
+      // 1. Robustly set the end date to the last millisecond of the day
+      baseEndDate.setHours(23, 59, 59, 999);
+      const endDate = baseEndDate;
+
+      // Date filter re-used for all queries
+      const dateFilter = {
+        createdAt: {
+          gte: startDate,
+          lte: endDate,
+        },
+        status: "COMPLETED" as const, // OPTIONAL: Filter only COMPLETED orders for true revenue
+      };
+
+      // 2. COMBINED QUERY for Revenue and Sales Count (Orders table)
+      const summaryData = await prisma.orders.aggregate({
+        where: dateFilter,
         _sum: {
           totalAmount: true,
         },
-      });
-
-      const totalRevenue = Number(ordersData._sum.totalAmount);
-
-      const salesData = await prisma.orders.aggregate({
         _count: {
-          id: true,
+          id: true, // Counts the number of orders (Total Sales)
         },
       });
 
-      const totalSales = salesData ? salesData._count.id : 0;
-
-      const productData = await prisma.products.aggregate({
+      // 3. Separate Query for Total Items Sold (OrderItems table)
+      // This is necessary because the item quantity is stored in the orderItems table.
+      const itemsSoldData = await prisma.orderItems.aggregate({
         _sum: {
-          sale: true,
+          quantity: true,
+        },
+        where: {
+          // Link the item to the order's date range
+          order: {
+            ...dateFilter,
+          },
         },
       });
 
-      const itemsSold = productData ? productData._sum.sale : 0;
-      const averageSaleValue = totalRevenue/totalSales
+      // --- Data Extraction & Calculation ---
 
+      // Handle totalRevenue (convert from BigInt or Decimal to Number)
+      const totalRevenue = Number(summaryData._sum.totalAmount || 0);
+
+      // Extract total sales count
+      const totalSales = summaryData._count.id || 0;
+
+      // Extract total items sold
+      // Note: Prisma returns BigInt for _sum of Int fields, so convert to Number.
+      const itemsSold = Number(itemsSoldData._sum.quantity || 0);
+
+      // 4. SAFELY CALCULATE Average Sale Value (Avoid division by zero)
+      const averageSaleValue = totalSales > 0 ? totalRevenue / totalSales : 0;
+
+      // 5. Final Summary Object
       const summary = {
         totalRevenue,
         totalSales,
-        averageSaleValue,
+        averageSaleValue: Math.round(averageSaleValue), // Round for currency display
         itemsSold,
-      }
+      };
 
       return summary;
     } catch (error) {
+      // Optional: Log the error for backend debugging
+      console.error("Error calculating order summary:", error);
       throw error;
     }
   },

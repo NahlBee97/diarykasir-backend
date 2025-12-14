@@ -3,27 +3,55 @@ import { prisma } from "../lib/prisma";
 import { AppError } from "../utils/appError";
 
 export const productService = {
-  getProducts: async () => {
+  getProducts: async (page: number = 1) => {
     try {
-      const products = await prisma.products.findMany({
-        orderBy: {
-          createdAt: "desc",
-        },
+      const SKIP = (page - 1) * 10;
+
+      // 1. Get total count
+      const totalCount = await prisma.products.count({
+        where: { isActive: true }, // Filter to count only active products
       });
 
-      return products;
+      // 2. Get paginated data
+      const products = await prisma.products.findMany({
+        where: { isActive: true }, // Only show active products
+        orderBy: { createdAt: "desc" },
+        take: 10,
+        skip: SKIP,
+      });
+
+      // 3. Calculate total pages
+      const totalPages = Math.ceil(totalCount / 10);
+
+      return {
+        products: products,
+        totalProducts: totalCount,
+        currentPage: page,
+        totalPages: totalPages,
+      };
     } catch (error) {
       throw error;
     }
   },
 
-  getTopProducts: async () => {
+  getTopProducts: async (start: string, end: string) => {
     try {
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+
+      endDate.setHours(23, 59, 59, 999);
+
       const products = await prisma.products.findMany({
-        take: 5,
+        where: {
+          createdAt: {
+            gte: startDate,
+            lte: endDate,
+          },
+        },
         orderBy: {
           sale: "desc",
         },
+        take: 5,
       });
 
       return products;

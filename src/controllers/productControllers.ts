@@ -5,11 +5,13 @@ import { productService } from "../services/productServices";
 export const productController = {
   getProducts: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const products = await productService.getProducts();
+      const { page } = req.query;
+
+      const productsData = await productService.getProducts(Number(page));
 
       res
         .status(200)
-        .json({ message: "Products retrieved successfully", products });
+        .json({ message: "Products retrieved successfully", productsData });
     } catch (error) {
       next(error);
     }
@@ -17,7 +19,12 @@ export const productController = {
 
   getTopProducts: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const products = await productService.getTopProducts();
+      const { start, end } = req.query;
+
+      const products = await productService.getTopProducts(
+        start as string,
+        end as string
+      );
 
       res
         .status(200)
@@ -51,7 +58,10 @@ export const productController = {
 
       const imageUrl = `/uploads/products/${file.filename}`;
 
-      const newProduct = await productService.create({...productData, stock: Number(productData.stock)}, imageUrl);
+      const newProduct = await productService.create(
+        { ...productData, stock: Number(productData.stock) },
+        imageUrl
+      );
       res
         .status(201)
         .json({ message: "Product created successfully", newProduct });
@@ -70,7 +80,7 @@ export const productController = {
 
       const updatedProduct = await productService.update(
         Number(productId),
-        {...productData, stock: Number(productData.stock)},
+        { ...productData, stock: Number(productData.stock) },
         imageUrl
       );
       res

@@ -36,9 +36,13 @@ export const orderController = {
 
   getAllOrders: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const orders = await OrderService.getAllOrders();
+      const { start, end, page } = req.query;
 
-      res.status(200).json({ message: "Get all orders successfully", orders });
+      console.log({start, end, page})
+
+      const ordersData = await OrderService.getAllOrders(start as string, end as string, Number(page));
+
+      res.status(200).json({ message: "Get all orders data successfully", ordersData });
     } catch (error) {
       next(error);
     }
@@ -58,7 +62,8 @@ export const orderController = {
 
   getOrderSummary: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const summary = await OrderService.getOrderSummary();
+      const {start, end} = req.query;
+      const summary = await OrderService.getOrderSummary(start as string, end as string);
 
       res
         .status(200)
