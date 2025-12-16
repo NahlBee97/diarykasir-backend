@@ -60,6 +60,26 @@ export const productService = {
     }
   },
 
+  getLowStockProducts: async () => {
+    try {
+      const products = await prisma.products.findMany({
+        where: {
+          stock: {
+            lte: 10,
+          },
+        },
+        orderBy: {
+          sale: "desc",
+        },
+        take: 10,
+      });
+
+      return products;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   findById: async (productId: number) => {
     try {
       const product = await prisma.products.findUnique({

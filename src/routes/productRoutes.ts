@@ -8,6 +8,7 @@ const router = Router();
 
 router.get("/", productController.getProducts);
 router.get("/top", productController.getTopProducts);
+router.get("/low", productController.getLowStockProducts);
 router.get("/:id", productController.findById);
 router.post("/", upload.single("file"), productController.create);
 router.put(
