@@ -5,7 +5,7 @@ import { cartService } from "../services/cartServices";
 export const cartController = {
   getUserCart: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userId = 1;
+      const userId = req.user?.id as number;
       const cart = await cartService.getUserCart(userId);
       res.status(200).json({ message: "User cart retrieved", cart });
     } catch (error) {

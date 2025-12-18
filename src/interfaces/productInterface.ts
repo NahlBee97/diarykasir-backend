@@ -1,5 +1,3 @@
-import { Decimal } from "@prisma/client/runtime/client";
-
 export interface NewProduct {
   name: string;
   category: string;

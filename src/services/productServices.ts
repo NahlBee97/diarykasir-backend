@@ -43,6 +43,7 @@ export const productService = {
 
       const products = await prisma.products.findMany({
         where: {
+          isActive: true,
           createdAt: {
             gte: startDate,
             lte: endDate,
@@ -64,6 +65,7 @@ export const productService = {
     try {
       const products = await prisma.products.findMany({
         where: {
+          isActive: true,
           stock: {
             lte: 10,
           },

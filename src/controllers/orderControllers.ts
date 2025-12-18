@@ -38,8 +38,6 @@ export const orderController = {
     try {
       const { start, end, page } = req.query;
 
-      console.log({start, end, page})
-
       const ordersData = await OrderService.getAllOrders(start as string, end as string, Number(page));
 
       res.status(200).json({ message: "Get all orders data successfully", ordersData });

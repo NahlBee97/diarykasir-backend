@@ -20,7 +20,7 @@ enum OrderStatus {
 model users {
   id        Int      @id @default(autoincrement())
   name      String
-  pin       String   @unique 
+  pin       String   
   role      Role     @default(CASHIER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

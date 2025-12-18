@@ -75,7 +75,7 @@ export const productController = {
       const imageUrl = `/uploads/products/${file.filename}`;
 
       const newProduct = await productService.create(
-        { ...productData, stock: Number(productData.stock) },
+        { ...productData, price: Number(productData.price), stock: Number(productData.stock) },
         imageUrl
       );
       res

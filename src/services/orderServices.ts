@@ -100,7 +100,6 @@ export const OrderService = {
         totalPages: Math.ceil(totalCount / TAKE),
       };
     } catch (error) {
-      console.error("Error fetching paginated orders:", error);
       throw error;
     }
   },
@@ -175,8 +174,6 @@ export const OrderService = {
 
       return summary;
     } catch (error) {
-      // Optional: Log the error for backend debugging
-      console.error("Error calculating order summary:", error);
       throw error;
     }
   },
