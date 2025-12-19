@@ -96,7 +96,7 @@ export const productController = {
 
       const updatedProduct = await productService.update(
         Number(productId),
-        { ...productData, stock: Number(productData.stock) },
+        { ...productData, price: Number(productData.price), stock: Number(productData.stock) },
         imageUrl
       );
       res

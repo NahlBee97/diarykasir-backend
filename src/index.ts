@@ -19,7 +19,7 @@ import orderRoutes from "./routes/orderRoutes";
 // cors
 app.use(
   cors({
-    origin: process.env.FE_PRO_URL || process.env.FE_DEV_URL,
+    origin: process.env.FE_PRO_URL && process.env.FE_DEV_URL,
     credentials: true,
   })
 );
