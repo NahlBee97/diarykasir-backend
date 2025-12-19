@@ -38,25 +38,47 @@ export const productService = {
     try {
       const startDate = new Date(start);
       const endDate = new Date(end);
-
       endDate.setHours(23, 59, 59, 999);
 
-      const products = await prisma.products.findMany({
+      // We use groupBy on orderItems to aggregate actual sales data
+      const topSales = await prisma.orderItems.groupBy({
+        by: ["productId"],
         where: {
-          isActive: true,
-          createdAt: {
-            gte: startDate,
-            lte: endDate,
+          order: {
+            createdAt: {
+              gte: startDate,
+              lte: endDate,
+            },
+            status: "COMPLETED", // Only count successful orders
           },
         },
+        _sum: {
+          quantity: true,
+        },
         orderBy: {
-          sale: "desc",
+          _sum: {
+            quantity: "desc",
+          },
         },
         take: 5,
       });
 
-      return products;
+      // Now, fetch the full product details for those IDs
+      const productsWithSales = await Promise.all(
+        topSales.map(async (sale) => {
+          const product = await prisma.products.findUnique({
+            where: { id: sale.productId },
+          });
+          return {
+            ...product,
+            totalSold: sale._sum.quantity,
+          };
+        })
+      );
+
+      return productsWithSales;
     } catch (error) {
+      console.error("Error fetching top products:", error);
       throw error;
     }
   },
@@ -107,7 +129,11 @@ export const productService = {
     }
   },
 
-  update: async (productId: number, productData: UpdateProduct, imageUrl?: string | null) => {
+  update: async (
+    productId: number,
+    productData: UpdateProduct,
+    imageUrl?: string | null
+  ) => {
     try {
       const { name, price, stock, category } = productData;
 
@@ -124,7 +150,7 @@ export const productService = {
           price: price || existingProduct.price,
           stock: stock || existingProduct.stock,
           category: category || existingProduct.category,
-          image: imageUrl ? imageUrl : existingProduct.image
+          image: imageUrl ? imageUrl : existingProduct.image,
         },
       });
 
