@@ -1,18 +1,7 @@
-import express, { Request, Response } from "express";
-import dotenv from "dotenv";
+import app from "./app";
 
-const app = express();
+const PORT = process.env.PORT || 5000;
 
-dotenv.config();
-
-const port = process.env.PORT || 5000;
-
-app.use(express.json());
-
-app.get("/", (reg: Request, res: Response) => {
-  res.send("Diary Kasir Backend Connected");
-});
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Backend server is running on http://localhost:${PORT}`);
 });
