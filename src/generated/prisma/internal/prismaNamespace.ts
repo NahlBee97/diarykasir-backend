@@ -898,7 +898,8 @@ export const UsersScalarFieldEnum = {
   pin: 'pin',
   role: 'role',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  shift: 'shift'
 } as const
 
 export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
@@ -1050,6 +1051,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Shift'
+ */
+export type EnumShiftFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Shift'>
+    
+
+
+/**
+ * Reference to a field of type 'Shift[]'
+ */
+export type ListEnumShiftFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Shift[]'>
     
 
 

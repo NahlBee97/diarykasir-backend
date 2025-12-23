@@ -3,8 +3,8 @@ import { authModels } from "../models/authModels";
 import jwt from "jsonwebtoken";
 
 export const authService = {
-  login: async (role: Role, pin: string) => {
-    const user = await authModels.findUser(role, pin);
+  login: async (userId: number, role: Role, pin: string) => {
+    const user = await authModels.findUser(userId, role, pin);
 
     if (!user) throw new Error("Invalid credentials");
 

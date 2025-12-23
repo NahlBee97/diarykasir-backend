@@ -23,3 +23,11 @@ export const OrderStatus = {
 } as const
 
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
+
+
+export const Shift = {
+  DAY: 'DAY',
+  NIGHT: 'NIGHT'
+} as const
+
+export type Shift = (typeof Shift)[keyof typeof Shift]
