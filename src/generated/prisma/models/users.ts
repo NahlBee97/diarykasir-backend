@@ -41,6 +41,8 @@ export type UsersMinAggregateOutputType = {
   role: $Enums.Role | null
   createdAt: Date | null
   updatedAt: Date | null
+  shift: $Enums.Shift | null
+  isActive: boolean | null
 }
 
 export type UsersMaxAggregateOutputType = {
@@ -50,6 +52,8 @@ export type UsersMaxAggregateOutputType = {
   role: $Enums.Role | null
   createdAt: Date | null
   updatedAt: Date | null
+  shift: $Enums.Shift | null
+  isActive: boolean | null
 }
 
 export type UsersCountAggregateOutputType = {
@@ -59,6 +63,8 @@ export type UsersCountAggregateOutputType = {
   role: number
   createdAt: number
   updatedAt: number
+  shift: number
+  isActive: number
   _all: number
 }
 
@@ -78,6 +84,8 @@ export type UsersMinAggregateInputType = {
   role?: true
   createdAt?: true
   updatedAt?: true
+  shift?: true
+  isActive?: true
 }
 
 export type UsersMaxAggregateInputType = {
@@ -87,6 +95,8 @@ export type UsersMaxAggregateInputType = {
   role?: true
   createdAt?: true
   updatedAt?: true
+  shift?: true
+  isActive?: true
 }
 
 export type UsersCountAggregateInputType = {
@@ -96,6 +106,8 @@ export type UsersCountAggregateInputType = {
   role?: true
   createdAt?: true
   updatedAt?: true
+  shift?: true
+  isActive?: true
   _all?: true
 }
 
@@ -192,6 +204,8 @@ export type UsersGroupByOutputType = {
   role: $Enums.Role
   createdAt: Date
   updatedAt: Date
+  shift: $Enums.Shift
+  isActive: boolean
   _count: UsersCountAggregateOutputType | null
   _avg: UsersAvgAggregateOutputType | null
   _sum: UsersSumAggregateOutputType | null
@@ -224,6 +238,8 @@ export type usersWhereInput = {
   role?: Prisma.EnumRoleFilter<"users"> | $Enums.Role
   createdAt?: Prisma.DateTimeFilter<"users"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"users"> | Date | string
+  shift?: Prisma.EnumShiftFilter<"users"> | $Enums.Shift
+  isActive?: Prisma.BoolFilter<"users"> | boolean
   orders?: Prisma.OrdersListRelationFilter
   cart?: Prisma.CartsListRelationFilter
 }
@@ -235,6 +251,8 @@ export type usersOrderByWithRelationInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  shift?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   orders?: Prisma.ordersOrderByRelationAggregateInput
   cart?: Prisma.cartsOrderByRelationAggregateInput
 }
@@ -249,6 +267,8 @@ export type usersWhereUniqueInput = Prisma.AtLeast<{
   role?: Prisma.EnumRoleFilter<"users"> | $Enums.Role
   createdAt?: Prisma.DateTimeFilter<"users"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"users"> | Date | string
+  shift?: Prisma.EnumShiftFilter<"users"> | $Enums.Shift
+  isActive?: Prisma.BoolFilter<"users"> | boolean
   orders?: Prisma.OrdersListRelationFilter
   cart?: Prisma.CartsListRelationFilter
 }, "id">
@@ -260,6 +280,8 @@ export type usersOrderByWithAggregationInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  shift?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   _count?: Prisma.usersCountOrderByAggregateInput
   _avg?: Prisma.usersAvgOrderByAggregateInput
   _max?: Prisma.usersMaxOrderByAggregateInput
@@ -277,6 +299,8 @@ export type usersScalarWhereWithAggregatesInput = {
   role?: Prisma.EnumRoleWithAggregatesFilter<"users"> | $Enums.Role
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"users"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"users"> | Date | string
+  shift?: Prisma.EnumShiftWithAggregatesFilter<"users"> | $Enums.Shift
+  isActive?: Prisma.BoolWithAggregatesFilter<"users"> | boolean
 }
 
 export type usersCreateInput = {
@@ -285,6 +309,8 @@ export type usersCreateInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
+  shift?: $Enums.Shift
+  isActive?: boolean
   orders?: Prisma.ordersCreateNestedManyWithoutUserInput
   cart?: Prisma.cartsCreateNestedManyWithoutUserInput
 }
@@ -296,6 +322,8 @@ export type usersUncheckedCreateInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
+  shift?: $Enums.Shift
+  isActive?: boolean
   orders?: Prisma.ordersUncheckedCreateNestedManyWithoutUserInput
   cart?: Prisma.cartsUncheckedCreateNestedManyWithoutUserInput
 }
@@ -306,6 +334,8 @@ export type usersUpdateInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  shift?: Prisma.EnumShiftFieldUpdateOperationsInput | $Enums.Shift
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   orders?: Prisma.ordersUpdateManyWithoutUserNestedInput
   cart?: Prisma.cartsUpdateManyWithoutUserNestedInput
 }
@@ -317,6 +347,8 @@ export type usersUncheckedUpdateInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  shift?: Prisma.EnumShiftFieldUpdateOperationsInput | $Enums.Shift
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   orders?: Prisma.ordersUncheckedUpdateManyWithoutUserNestedInput
   cart?: Prisma.cartsUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -328,6 +360,8 @@ export type usersCreateManyInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
+  shift?: $Enums.Shift
+  isActive?: boolean
 }
 
 export type usersUpdateManyMutationInput = {
@@ -336,6 +370,8 @@ export type usersUpdateManyMutationInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  shift?: Prisma.EnumShiftFieldUpdateOperationsInput | $Enums.Shift
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type usersUncheckedUpdateManyInput = {
@@ -345,6 +381,8 @@ export type usersUncheckedUpdateManyInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  shift?: Prisma.EnumShiftFieldUpdateOperationsInput | $Enums.Shift
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type usersCountOrderByAggregateInput = {
@@ -354,6 +392,8 @@ export type usersCountOrderByAggregateInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  shift?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
 }
 
 export type usersAvgOrderByAggregateInput = {
@@ -367,6 +407,8 @@ export type usersMaxOrderByAggregateInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  shift?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
 }
 
 export type usersMinOrderByAggregateInput = {
@@ -376,6 +418,8 @@ export type usersMinOrderByAggregateInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  shift?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
 }
 
 export type usersSumOrderByAggregateInput = {
@@ -397,6 +441,14 @@ export type EnumRoleFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type EnumShiftFieldUpdateOperationsInput = {
+  set?: $Enums.Shift
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -441,6 +493,8 @@ export type usersCreateWithoutCartInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
+  shift?: $Enums.Shift
+  isActive?: boolean
   orders?: Prisma.ordersCreateNestedManyWithoutUserInput
 }
 
@@ -451,6 +505,8 @@ export type usersUncheckedCreateWithoutCartInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
+  shift?: $Enums.Shift
+  isActive?: boolean
   orders?: Prisma.ordersUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -476,6 +532,8 @@ export type usersUpdateWithoutCartInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  shift?: Prisma.EnumShiftFieldUpdateOperationsInput | $Enums.Shift
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   orders?: Prisma.ordersUpdateManyWithoutUserNestedInput
 }
 
@@ -486,6 +544,8 @@ export type usersUncheckedUpdateWithoutCartInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  shift?: Prisma.EnumShiftFieldUpdateOperationsInput | $Enums.Shift
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   orders?: Prisma.ordersUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -495,6 +555,8 @@ export type usersCreateWithoutOrdersInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
+  shift?: $Enums.Shift
+  isActive?: boolean
   cart?: Prisma.cartsCreateNestedManyWithoutUserInput
 }
 
@@ -505,6 +567,8 @@ export type usersUncheckedCreateWithoutOrdersInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
+  shift?: $Enums.Shift
+  isActive?: boolean
   cart?: Prisma.cartsUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -530,6 +594,8 @@ export type usersUpdateWithoutOrdersInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  shift?: Prisma.EnumShiftFieldUpdateOperationsInput | $Enums.Shift
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cart?: Prisma.cartsUpdateManyWithoutUserNestedInput
 }
 
@@ -540,6 +606,8 @@ export type usersUncheckedUpdateWithoutOrdersInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  shift?: Prisma.EnumShiftFieldUpdateOperationsInput | $Enums.Shift
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cart?: Prisma.cartsUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -590,6 +658,8 @@ export type usersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  shift?: boolean
+  isActive?: boolean
   orders?: boolean | Prisma.users$ordersArgs<ExtArgs>
   cart?: boolean | Prisma.users$cartArgs<ExtArgs>
   _count?: boolean | Prisma.UsersCountOutputTypeDefaultArgs<ExtArgs>
@@ -602,6 +672,8 @@ export type usersSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  shift?: boolean
+  isActive?: boolean
 }, ExtArgs["result"]["users"]>
 
 export type usersSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -611,6 +683,8 @@ export type usersSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  shift?: boolean
+  isActive?: boolean
 }, ExtArgs["result"]["users"]>
 
 export type usersSelectScalar = {
@@ -620,9 +694,11 @@ export type usersSelectScalar = {
   role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  shift?: boolean
+  isActive?: boolean
 }
 
-export type usersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "pin" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["users"]>
+export type usersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "pin" | "role" | "createdAt" | "updatedAt" | "shift" | "isActive", ExtArgs["result"]["users"]>
 export type usersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orders?: boolean | Prisma.users$ordersArgs<ExtArgs>
   cart?: boolean | Prisma.users$cartArgs<ExtArgs>
@@ -644,6 +720,8 @@ export type $usersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     role: $Enums.Role
     createdAt: Date
     updatedAt: Date
+    shift: $Enums.Shift
+    isActive: boolean
   }, ExtArgs["result"]["users"]>
   composites: {}
 }
@@ -1075,6 +1153,8 @@ export interface usersFieldRefs {
   readonly role: Prisma.FieldRef<"users", 'Role'>
   readonly createdAt: Prisma.FieldRef<"users", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"users", 'DateTime'>
+  readonly shift: Prisma.FieldRef<"users", 'Shift'>
+  readonly isActive: Prisma.FieldRef<"users", 'Boolean'>
 }
     
 

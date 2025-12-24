@@ -35,7 +35,7 @@ export async function validateCartItems(items: CartItem[]) {
   }
 }
 
-export async function createOrderTransaction(orderData: NewOrder, cart: Cart) {
+export async function createOrder(orderData: NewOrder, cart: Cart) {
   try {
     return await prisma.$transaction(async (tx) => {
       // 1. Create order

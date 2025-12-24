@@ -6,6 +6,7 @@ const router = Router();
 
 router.get("/", VerifyToken, orderController.getAllOrders);
 router.get("/today", VerifyToken, orderController.getTodayOrders);
+router.get("/today/:userId", VerifyToken, orderController.getTodayOrders);
 router.get("/summary", VerifyToken, orderController.getOrderSummary);
 router.get(
   "/order-items/:orderId",

@@ -13,6 +13,7 @@ import authRoutes from "./routes/authRoutes";
 import productRoutes from "./routes/productRoutes";
 import cartRoutes from "./routes/cartRoutes";
 import orderRoutes from "./routes/orderRoutes";
+import userRoutes from "./routes/userRoutes";
 
 // cors
 app.use(
@@ -33,6 +34,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/carts", cartRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/users", userRoutes);
 
 // Error Handler
 app.use(errorHandler);

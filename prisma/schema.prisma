@@ -17,6 +17,11 @@ enum OrderStatus {
   VOID
 }
 
+enum Shift {
+  DAY
+  NIGHT
+}
+
 model users {
   id        Int      @id @default(autoincrement())
   name      String
@@ -24,6 +29,8 @@ model users {
   role      Role     @default(CASHIER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  shift     Shift @default(DAY)
+  isActive  Boolean  @default(true)
 
   // Relations
   orders    orders[]
