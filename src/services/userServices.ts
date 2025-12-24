@@ -6,12 +6,14 @@ export const userService = {
     const users = await prisma.users.findMany({
       where: {
         role: "CASHIER",
+        isActive: true,
       },
       select: {
         id: true,
         name: true,
         shift: true,
       },
+      orderBy: { createdAt: "desc" },
     });
 
     return users;
@@ -57,8 +59,9 @@ export const userService = {
     return updatedUser;
   },
   deleteUser: async (userId: number) => {
-    await prisma.users.delete({
+    await prisma.users.update({
       where: { id: userId },
+      data: { isActive: false },
     });
   },
 };

@@ -19,11 +19,12 @@ export const productController = {
 
   getTopProducts: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { start, end } = req.query;
+      const { start, end, userId } = req.query;
 
       const products = await productService.getTopProducts(
         start as string,
-        end as string
+        end as string,
+        userId ? Number(userId) : undefined
       );
 
       res

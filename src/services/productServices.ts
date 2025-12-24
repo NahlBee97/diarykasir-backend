@@ -1,3 +1,4 @@
+import { getWitaDateRange } from "../helper/getWitaDateRange";
 import { NewProduct, UpdateProduct } from "../interfaces/productInterface";
 import { prisma } from "../lib/prisma";
 import { AppError } from "../utils/appError";
@@ -34,11 +35,10 @@ export const productService = {
     }
   },
 
-  getTopProducts: async (start: string, end: string) => {
+  getTopProducts: async (start: string, end: string, userId?: number) => {
     try {
-      const startDate = new Date(start);
-      const endDate = new Date(end);
-      endDate.setHours(23, 59, 59, 999);
+      const startDate = getWitaDateRange(start).start;
+      const endDate = getWitaDateRange(end).end;
 
       // We use groupBy on orderItems to aggregate actual sales data
       const topSales = await prisma.orderItems.groupBy({
@@ -49,6 +49,7 @@ export const productService = {
               gte: startDate,
               lte: endDate,
             },
+            ...(userId && { userId: userId }), // Filter by userId if provided
             status: "COMPLETED", // Only count successful orders
           },
         },

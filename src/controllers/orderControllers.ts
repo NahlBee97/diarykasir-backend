@@ -36,9 +36,9 @@ export const orderController = {
 
   getAllOrders: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { start, end, page } = req.query;
+      const { start, end, page, userId } = req.query;
 
-      const ordersData = await OrderService.getAllOrders(start as string, end as string, Number(page));
+      const ordersData = await OrderService.getAllOrders(start as string, end as string, Number(page), userId ? Number(userId) : undefined);
 
       res.status(200).json({ message: "Get all orders data successfully", ordersData });
     } catch (error) {
@@ -48,7 +48,8 @@ export const orderController = {
 
   getTodayOrders: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const orders = await OrderService.getTodayOrders();
+      const userId = req.params.userId as string;
+      const orders = await OrderService.getTodayOrders(Number(userId));
 
       res
         .status(200)
@@ -60,8 +61,8 @@ export const orderController = {
 
   getOrderSummary: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const {start, end} = req.query;
-      const summary = await OrderService.getOrderSummary(start as string, end as string);
+      const {start, end, userId} = req.query;
+      const summary = await OrderService.getOrderSummary(start as string, end as string, userId ? Number(userId) : undefined);
 
       res
         .status(200)
