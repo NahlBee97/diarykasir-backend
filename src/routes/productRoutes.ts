@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { RoleGuard, VerifyToken } from "../middlewares/authMiddlewares";
 import { productController } from "../controllers/productControllers";
-import upload from "../utils/multer";
+import { upload } from "../utils/multer";
 
 const router = Router();
 
