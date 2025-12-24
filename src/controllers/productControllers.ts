@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { NewProduct, UpdateProduct } from "../interfaces/productInterface";
 import { productService } from "../services/productServices";
+import { uploadImageToSupabase } from "../helper/imageUpload";
 
 export const productController = {
   getProducts: async (req: Request, res: Response, next: NextFunction) => {
@@ -66,14 +67,13 @@ export const productController = {
   create: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const productData = req.body as NewProduct;
-
       const file = req.file;
 
       if (!file) {
-        return res.status(400).json({ message: "Product image is required." });
+        return res.status(400).json({ message: "Image file is required" });
       }
 
-      const imageUrl = `/uploads/products/${file.filename}`;
+      const imageUrl = await uploadImageToSupabase(file);
 
       const newProduct = await productService.create(
         { ...productData, price: Number(productData.price), stock: Number(productData.stock) },
@@ -93,7 +93,7 @@ export const productController = {
       const productData = req.body as UpdateProduct;
       const file = req.file;
 
-      const imageUrl = file ? `/uploads/products/${file?.filename}` : null;
+      const imageUrl = file ? await uploadImageToSupabase(file) : null;
 
       const updatedProduct = await productService.update(
         Number(productId),
