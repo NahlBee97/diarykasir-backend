@@ -9,7 +9,7 @@ export const cartService = {
         include: {
           items: {
             orderBy: {
-              createdAt: "desc", 
+              createdAt: "asc", 
             },
             include: {
               product: true,
