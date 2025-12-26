@@ -10,4 +10,14 @@ export const authModels = {
     });
     return user;
   },
+  invalidateToken: async (token: string) => {
+    await prisma.tokens.update({
+      where: {
+        token,
+      },
+      data: {
+        isActive: false,
+      },
+    });
+  }
 };

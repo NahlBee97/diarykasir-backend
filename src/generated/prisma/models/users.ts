@@ -242,6 +242,7 @@ export type usersWhereInput = {
   isActive?: Prisma.BoolFilter<"users"> | boolean
   orders?: Prisma.OrdersListRelationFilter
   cart?: Prisma.CartsListRelationFilter
+  tokens?: Prisma.TokensListRelationFilter
 }
 
 export type usersOrderByWithRelationInput = {
@@ -255,6 +256,7 @@ export type usersOrderByWithRelationInput = {
   isActive?: Prisma.SortOrder
   orders?: Prisma.ordersOrderByRelationAggregateInput
   cart?: Prisma.cartsOrderByRelationAggregateInput
+  tokens?: Prisma.tokensOrderByRelationAggregateInput
 }
 
 export type usersWhereUniqueInput = Prisma.AtLeast<{
@@ -271,6 +273,7 @@ export type usersWhereUniqueInput = Prisma.AtLeast<{
   isActive?: Prisma.BoolFilter<"users"> | boolean
   orders?: Prisma.OrdersListRelationFilter
   cart?: Prisma.CartsListRelationFilter
+  tokens?: Prisma.TokensListRelationFilter
 }, "id">
 
 export type usersOrderByWithAggregationInput = {
@@ -313,6 +316,7 @@ export type usersCreateInput = {
   isActive?: boolean
   orders?: Prisma.ordersCreateNestedManyWithoutUserInput
   cart?: Prisma.cartsCreateNestedManyWithoutUserInput
+  tokens?: Prisma.tokensCreateNestedManyWithoutUserInput
 }
 
 export type usersUncheckedCreateInput = {
@@ -326,6 +330,7 @@ export type usersUncheckedCreateInput = {
   isActive?: boolean
   orders?: Prisma.ordersUncheckedCreateNestedManyWithoutUserInput
   cart?: Prisma.cartsUncheckedCreateNestedManyWithoutUserInput
+  tokens?: Prisma.tokensUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type usersUpdateInput = {
@@ -338,6 +343,7 @@ export type usersUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   orders?: Prisma.ordersUpdateManyWithoutUserNestedInput
   cart?: Prisma.cartsUpdateManyWithoutUserNestedInput
+  tokens?: Prisma.tokensUpdateManyWithoutUserNestedInput
 }
 
 export type usersUncheckedUpdateInput = {
@@ -351,6 +357,7 @@ export type usersUncheckedUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   orders?: Prisma.ordersUncheckedUpdateManyWithoutUserNestedInput
   cart?: Prisma.cartsUncheckedUpdateManyWithoutUserNestedInput
+  tokens?: Prisma.tokensUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type usersCreateManyInput = {
@@ -487,6 +494,20 @@ export type usersUpdateOneRequiredWithoutOrdersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.usersUpdateToOneWithWhereWithoutOrdersInput, Prisma.usersUpdateWithoutOrdersInput>, Prisma.usersUncheckedUpdateWithoutOrdersInput>
 }
 
+export type usersCreateNestedOneWithoutTokensInput = {
+  create?: Prisma.XOR<Prisma.usersCreateWithoutTokensInput, Prisma.usersUncheckedCreateWithoutTokensInput>
+  connectOrCreate?: Prisma.usersCreateOrConnectWithoutTokensInput
+  connect?: Prisma.usersWhereUniqueInput
+}
+
+export type usersUpdateOneRequiredWithoutTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.usersCreateWithoutTokensInput, Prisma.usersUncheckedCreateWithoutTokensInput>
+  connectOrCreate?: Prisma.usersCreateOrConnectWithoutTokensInput
+  upsert?: Prisma.usersUpsertWithoutTokensInput
+  connect?: Prisma.usersWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.usersUpdateToOneWithWhereWithoutTokensInput, Prisma.usersUpdateWithoutTokensInput>, Prisma.usersUncheckedUpdateWithoutTokensInput>
+}
+
 export type usersCreateWithoutCartInput = {
   name: string
   pin: string
@@ -496,6 +517,7 @@ export type usersCreateWithoutCartInput = {
   shift?: $Enums.Shift
   isActive?: boolean
   orders?: Prisma.ordersCreateNestedManyWithoutUserInput
+  tokens?: Prisma.tokensCreateNestedManyWithoutUserInput
 }
 
 export type usersUncheckedCreateWithoutCartInput = {
@@ -508,6 +530,7 @@ export type usersUncheckedCreateWithoutCartInput = {
   shift?: $Enums.Shift
   isActive?: boolean
   orders?: Prisma.ordersUncheckedCreateNestedManyWithoutUserInput
+  tokens?: Prisma.tokensUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type usersCreateOrConnectWithoutCartInput = {
@@ -535,6 +558,7 @@ export type usersUpdateWithoutCartInput = {
   shift?: Prisma.EnumShiftFieldUpdateOperationsInput | $Enums.Shift
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   orders?: Prisma.ordersUpdateManyWithoutUserNestedInput
+  tokens?: Prisma.tokensUpdateManyWithoutUserNestedInput
 }
 
 export type usersUncheckedUpdateWithoutCartInput = {
@@ -547,6 +571,7 @@ export type usersUncheckedUpdateWithoutCartInput = {
   shift?: Prisma.EnumShiftFieldUpdateOperationsInput | $Enums.Shift
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   orders?: Prisma.ordersUncheckedUpdateManyWithoutUserNestedInput
+  tokens?: Prisma.tokensUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type usersCreateWithoutOrdersInput = {
@@ -558,6 +583,7 @@ export type usersCreateWithoutOrdersInput = {
   shift?: $Enums.Shift
   isActive?: boolean
   cart?: Prisma.cartsCreateNestedManyWithoutUserInput
+  tokens?: Prisma.tokensCreateNestedManyWithoutUserInput
 }
 
 export type usersUncheckedCreateWithoutOrdersInput = {
@@ -570,6 +596,7 @@ export type usersUncheckedCreateWithoutOrdersInput = {
   shift?: $Enums.Shift
   isActive?: boolean
   cart?: Prisma.cartsUncheckedCreateNestedManyWithoutUserInput
+  tokens?: Prisma.tokensUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type usersCreateOrConnectWithoutOrdersInput = {
@@ -597,6 +624,7 @@ export type usersUpdateWithoutOrdersInput = {
   shift?: Prisma.EnumShiftFieldUpdateOperationsInput | $Enums.Shift
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cart?: Prisma.cartsUpdateManyWithoutUserNestedInput
+  tokens?: Prisma.tokensUpdateManyWithoutUserNestedInput
 }
 
 export type usersUncheckedUpdateWithoutOrdersInput = {
@@ -609,6 +637,73 @@ export type usersUncheckedUpdateWithoutOrdersInput = {
   shift?: Prisma.EnumShiftFieldUpdateOperationsInput | $Enums.Shift
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cart?: Prisma.cartsUncheckedUpdateManyWithoutUserNestedInput
+  tokens?: Prisma.tokensUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type usersCreateWithoutTokensInput = {
+  name: string
+  pin: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  shift?: $Enums.Shift
+  isActive?: boolean
+  orders?: Prisma.ordersCreateNestedManyWithoutUserInput
+  cart?: Prisma.cartsCreateNestedManyWithoutUserInput
+}
+
+export type usersUncheckedCreateWithoutTokensInput = {
+  id?: number
+  name: string
+  pin: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  shift?: $Enums.Shift
+  isActive?: boolean
+  orders?: Prisma.ordersUncheckedCreateNestedManyWithoutUserInput
+  cart?: Prisma.cartsUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type usersCreateOrConnectWithoutTokensInput = {
+  where: Prisma.usersWhereUniqueInput
+  create: Prisma.XOR<Prisma.usersCreateWithoutTokensInput, Prisma.usersUncheckedCreateWithoutTokensInput>
+}
+
+export type usersUpsertWithoutTokensInput = {
+  update: Prisma.XOR<Prisma.usersUpdateWithoutTokensInput, Prisma.usersUncheckedUpdateWithoutTokensInput>
+  create: Prisma.XOR<Prisma.usersCreateWithoutTokensInput, Prisma.usersUncheckedCreateWithoutTokensInput>
+  where?: Prisma.usersWhereInput
+}
+
+export type usersUpdateToOneWithWhereWithoutTokensInput = {
+  where?: Prisma.usersWhereInput
+  data: Prisma.XOR<Prisma.usersUpdateWithoutTokensInput, Prisma.usersUncheckedUpdateWithoutTokensInput>
+}
+
+export type usersUpdateWithoutTokensInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  pin?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  shift?: Prisma.EnumShiftFieldUpdateOperationsInput | $Enums.Shift
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orders?: Prisma.ordersUpdateManyWithoutUserNestedInput
+  cart?: Prisma.cartsUpdateManyWithoutUserNestedInput
+}
+
+export type usersUncheckedUpdateWithoutTokensInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  pin?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  shift?: Prisma.EnumShiftFieldUpdateOperationsInput | $Enums.Shift
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orders?: Prisma.ordersUncheckedUpdateManyWithoutUserNestedInput
+  cart?: Prisma.cartsUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -619,11 +714,13 @@ export type usersUncheckedUpdateWithoutOrdersInput = {
 export type UsersCountOutputType = {
   orders: number
   cart: number
+  tokens: number
 }
 
 export type UsersCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orders?: boolean | UsersCountOutputTypeCountOrdersArgs
   cart?: boolean | UsersCountOutputTypeCountCartArgs
+  tokens?: boolean | UsersCountOutputTypeCountTokensArgs
 }
 
 /**
@@ -650,6 +747,13 @@ export type UsersCountOutputTypeCountCartArgs<ExtArgs extends runtime.Types.Exte
   where?: Prisma.cartsWhereInput
 }
 
+/**
+ * UsersCountOutputType without action
+ */
+export type UsersCountOutputTypeCountTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.tokensWhereInput
+}
+
 
 export type usersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -662,6 +766,7 @@ export type usersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   isActive?: boolean
   orders?: boolean | Prisma.users$ordersArgs<ExtArgs>
   cart?: boolean | Prisma.users$cartArgs<ExtArgs>
+  tokens?: boolean | Prisma.users$tokensArgs<ExtArgs>
   _count?: boolean | Prisma.UsersCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["users"]>
 
@@ -702,6 +807,7 @@ export type usersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
 export type usersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orders?: boolean | Prisma.users$ordersArgs<ExtArgs>
   cart?: boolean | Prisma.users$cartArgs<ExtArgs>
+  tokens?: boolean | Prisma.users$tokensArgs<ExtArgs>
   _count?: boolean | Prisma.UsersCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type usersIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -712,6 +818,7 @@ export type $usersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     orders: Prisma.$ordersPayload<ExtArgs>[]
     cart: Prisma.$cartsPayload<ExtArgs>[]
+    tokens: Prisma.$tokensPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1118,6 +1225,7 @@ export interface Prisma__usersClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   orders<T extends Prisma.users$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ordersPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   cart<T extends Prisma.users$cartArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$cartArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$cartsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  tokens<T extends Prisma.users$tokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$tokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$tokensPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1588,6 +1696,30 @@ export type users$cartArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.CartsScalarFieldEnum | Prisma.CartsScalarFieldEnum[]
+}
+
+/**
+ * users.tokens
+ */
+export type users$tokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the tokens
+   */
+  select?: Prisma.tokensSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the tokens
+   */
+  omit?: Prisma.tokensOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.tokensInclude<ExtArgs> | null
+  where?: Prisma.tokensWhereInput
+  orderBy?: Prisma.tokensOrderByWithRelationInput | Prisma.tokensOrderByWithRelationInput[]
+  cursor?: Prisma.tokensWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TokensScalarFieldEnum | Prisma.TokensScalarFieldEnum[]
 }
 
 /**

@@ -20,4 +20,8 @@ export const authService = {
 
     return accessToken;
   },
+  logout: async (token: string | undefined) => {
+    if (!token) throw new Error("No token provided");
+    await authModels.invalidateToken(token);
+  },
 };
