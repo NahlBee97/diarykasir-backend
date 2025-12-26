@@ -1,5 +1,6 @@
 import { Shift } from "../generated/prisma/enums";
 import { prisma } from "../lib/prisma";
+import bcrypt from "bcryptjs"
 
 export const userService = {
   getAllUsers: async () => {
@@ -32,12 +33,29 @@ export const userService = {
     return user;
   },
   createUser: async (userData: { name: string; shift: Shift; pin: string }) => {
+    const existingUser = await prisma.users.findFirst({
+      where: { name: userData.name },
+    });
+
+    if (existingUser) {
+      throw new Error("User with this name already exists");
+    }
+
+    const hashedPin = await bcrypt.hash(userData.pin, 10);
+
     const newUser = await prisma.users.create({
       data: {
         name: userData.name,
         shift: userData.shift,
-        pin: userData.pin,
+        pin: hashedPin,
         role: "CASHIER",
+      },
+    });
+
+    await prisma.carts.create({
+      data: {
+        userId: newUser.id,
+        quantity: 0,
       },
     });
 
