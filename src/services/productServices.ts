@@ -173,6 +173,10 @@ export const productService = {
         where: { id: productId },
         data: { isActive: false },
       });
+
+      await prisma.cartItems.deleteMany({
+        where: { productId },
+      });
     } catch (error) {
       throw error;
     }

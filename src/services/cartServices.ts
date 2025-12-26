@@ -8,8 +8,9 @@ export const cartService = {
         where: { userId },
         include: {
           items: {
+            where: { product: { isActive: true } },
             orderBy: {
-              createdAt: "asc", 
+              createdAt: "asc",
             },
             include: {
               product: true,
