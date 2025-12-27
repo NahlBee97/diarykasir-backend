@@ -9,42 +9,44 @@ export function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  let status;
-  let message;
-
   if (error instanceof AppError) {
-    status = error.statusCode;
-    message = error.message;
-  }
-
-  if (error instanceof TokenExpiredError) {
-    status = 401;
-    message = "Session expired. Please log in again";
-  }
-
-  if (error instanceof JsonWebTokenError) {
-    status = 401;
-    message = "Invalid session token. Please log in again";
+    return res.status(error.statusCode).json({
+      success: false,
+      message: error.message,
+    });
   }
 
   if (error instanceof ZodError) {
-    status = 400;
-    message = error.issues.map((e) => ({
+    const formattedErrors = error.issues.map((e) => ({
       field: e.path.join("."),
       message: e.message,
     }));
-  }
 
-  console.error(error);
-
-  if (status && message) {
-    return res.status(status).json({
-      message,
-    });
-  } else {
-    return res.status(500).json({
-      message:
-        "Internal Server Error, check your connection or try again later",
+    return res.status(400).json({
+      success: false,
+      message: "Validation failed",
+      errors: formattedErrors, 
     });
   }
+
+  if (error instanceof TokenExpiredError) {
+    return res.status(401).json({
+      success: false,
+      message: "Session expired. Please log in again",
+    });
+  }
+
+  if (error instanceof JsonWebTokenError) {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid session token. Please log in again",
+    });
+  }
+
+  console.error("🔥 UNCAUGHT ERROR:", error);
+
+  return res.status(500).json({
+    success: false,
+    message: "Internal Server Error. Please try again later.",
+  });
 }

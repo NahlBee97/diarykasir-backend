@@ -1,33 +1,43 @@
-import { Role } from "../generated/prisma/enums";
 import { prisma } from "../lib/prisma";
 
 export const authModels = {
-  findUser: async (userId: number, role: Role) => {
-    const user = await prisma.users.findFirst({
-      where: {
-        id: userId,
-        role,
-      },
-    });
-    
-    return user;
+  findUser: async (userId: number) => {
+    try {
+      const user = await prisma.users.findUnique({
+        where: {
+          id: userId,
+        },
+      });
+  
+      return user;
+    } catch (error) {
+      throw error;
+    }
   },
   storeToken: async (userId: number, token: string) => {
-    await prisma.tokens.create({
-      data: {
-        userId,
-        token,
-      },
-    });
+    try {
+      await prisma.tokens.create({
+        data: {
+          userId,
+          token,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
   },
   invalidateToken: async (token: string) => {
-    await prisma.tokens.update({
-      where: {
-        token,
-      },
-      data: {
-        isActive: false,
-      },
-    });
+    try {
+      await prisma.tokens.update({
+        where: {
+          token,
+        },
+        data: {
+          isActive: false,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
   },
 };

@@ -1,35 +1,42 @@
-import { Role } from "../generated/prisma/enums";
 import { authModels } from "../models/authModels";
 import bcrypt from "bcryptjs";
 import { AppError } from "../utils/appError";
 import jwt from "jsonwebtoken";
 
 export const authService = {
-  login: async (userId: number, role: Role, pin: string) => {
-    const user = await authModels.findUser(userId, role);
+  login: async (userId: number, pin: string) => {
+    try {
+      const user = await authModels.findUser(userId);
 
-    if (!user) throw new Error("User not found");
+      if (!user) throw new AppError("User not found", 404);
 
-    const checkPin = await bcrypt.compare(pin, user.pin as string);
+      const checkPin = await bcrypt.compare(pin, user.pin as string);
 
-    if (!checkPin) throw new AppError("Incorrect Password", 401);
+      if (!checkPin) throw new AppError("Incorrect Password", 401);
 
-    const payload = {
-      id: user.id,
-      role: user.role,
-      name: user.name,
-    };
+      const payload = {
+        id: user.id,
+        role: user.role,
+        name: user.name,
+      };
 
-    const accessToken = jwt.sign(payload, process.env.JWT_SECRET!, {
-      expiresIn: "1d",
-    });
+      const accessToken = jwt.sign(payload, process.env.JWT_SECRET!, {
+        expiresIn: "1d",
+      });
 
-    await authModels.storeToken(user.id, accessToken);
+      await authModels.storeToken(user.id, accessToken);
 
-    return accessToken;
+      return accessToken;
+    } catch (error) {
+      throw error;
+    }
   },
   logout: async (token: string | undefined) => {
-    if (!token) throw new Error("No token provided");
-    await authModels.invalidateToken(token);
+    try {
+      if (!token) throw new AppError("No token provided", 400);
+      await authModels.invalidateToken(token);
+    } catch (error) {
+      throw error;
+    }
   },
 };

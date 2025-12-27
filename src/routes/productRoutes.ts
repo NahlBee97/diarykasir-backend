@@ -7,10 +7,10 @@ import { upload } from "../utils/multer";
 const router = Router();
 
 router.get("/", productController.getProducts);
-router.get("/top", productController.getTopProducts);
-router.get("/low", productController.getLowStockProducts);
-router.get("/:id", productController.findById);
-router.post("/", upload.single("file"), productController.create);
+router.get("/top", VerifyToken, RoleGuard, productController.getTopProducts);
+router.get("/low", VerifyToken, RoleGuard, productController.getLowStockProducts);
+router.get("/:id", VerifyToken, RoleGuard, productController.findById);
+router.post("/", VerifyToken, RoleGuard, upload.single("file"), productController.create);
 router.put(
   "/:id",
   VerifyToken,

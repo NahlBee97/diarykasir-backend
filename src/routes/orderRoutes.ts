@@ -1,18 +1,20 @@
 import { Router } from "express";
-import { VerifyToken } from "../middlewares/authMiddlewares";
+import { RoleGuard, VerifyToken } from "../middlewares/authMiddlewares";
 import { orderController } from "../controllers/orderControllers";
 
 const router = Router();
 
-router.get("/", VerifyToken, orderController.getAllOrders);
-router.get("/today", VerifyToken, orderController.getTodayOrders);
-router.get("/today/:userId", VerifyToken, orderController.getTodayOrders);
-router.get("/summary", VerifyToken, orderController.getOrderSummary);
+router.get("/", VerifyToken, RoleGuard, orderController.getAllOrders);
+router.get("/today", VerifyToken, RoleGuard, orderController.getTodayOrders);
+router.get("/today/:userId", VerifyToken, RoleGuard, orderController.getTodayOrders);
+router.get("/summary", VerifyToken, RoleGuard, orderController.getOrderSummary);
 router.get(
   "/order-items/:orderId",
   VerifyToken,
+  RoleGuard,
   orderController.getOrderItemsByOrderId
 );
+
 router.post("/", VerifyToken, orderController.createOrder);
 
 export default router;
