@@ -20,7 +20,7 @@ export const authService = {
       };
 
       const accessToken = jwt.sign(payload, process.env.JWT_SECRET!, {
-        expiresIn: "1d",
+        expiresIn: "1m",
       });
 
       await authModels.storeToken(user.id, accessToken);

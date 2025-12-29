@@ -30,14 +30,14 @@ export function errorHandler(
   }
 
   if (error instanceof TokenExpiredError) {
-    return res.status(401).json({
+    return res.status(403).json({
       success: false,
       message: "Sesi telah habis. Silahkan login kembali.",
     });
   }
 
   if (error instanceof JsonWebTokenError) {
-    return res.status(401).json({
+    return res.status(403).json({
       success: false,
       message: "Token sesi tidak valid. Silahkan login kembali.",
     });
