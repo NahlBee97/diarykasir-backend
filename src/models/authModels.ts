@@ -8,7 +8,7 @@ export const authModels = {
           id: userId,
         },
       });
-  
+
       return user;
     } catch (error) {
       throw error;
@@ -36,6 +36,21 @@ export const authModels = {
           isActive: false,
         },
       });
+    } catch (error) {
+      throw error;
+    }
+  },
+  checkToken: async (token: string) => {
+    try {
+      const existToken = await prisma.tokens.findFirst({
+        where: { token },
+        select: {
+          id: true,
+          isActive: true,
+        },
+      });
+
+      return existToken?.isActive;
     } catch (error) {
       throw error;
     }
