@@ -93,7 +93,7 @@ export const productController = {
       const productData = req.body as UpdateProduct;
       const file = req.file;
 
-      const imageUrl = file ? await uploadImageToSupabase(file) : null;
+      const imageUrl = file ? await uploadImageToSupabase(file) : undefined;
 
       const updatedProduct = await productService.update(
         Number(productId),

@@ -31,7 +31,9 @@ export const cartService = {
 
       if (!cart) throw new AppError("Keranjang tidak ditemukan", 404);
 
-      await cartItemsModels.addItem(cart.id, productId, quantity);
+      const itemAdded = await cartItemsModels.addItem(cart.id, productId, quantity);
+
+      if(!itemAdded) throw new AppError("Gagal menambahkan item ke keranjang", 500);
 
       return cart;
     } catch (error) {
@@ -46,6 +48,8 @@ export const cartService = {
       if (!cartItem) throw new AppError("Item tidak ditemukan di keranjang", 404);
 
       const updatedItem = await cartItemsModels.updateItem(itemId, quantity);
+
+      if(!updatedItem) throw new AppError("Gagal update item di keranjang", 500);
 
       return updatedItem;
     } catch (error) {

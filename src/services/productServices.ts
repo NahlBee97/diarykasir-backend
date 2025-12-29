@@ -1,31 +1,23 @@
+import { orderItems } from "../generated/prisma/client";
 import { getWitaDateRange } from "../helper/getWitaDateRange";
 import { NewProduct, UpdateProduct } from "../interfaces/productInterface";
 import { prisma } from "../lib/prisma";
+import { productModels } from "../models/productModels";
 import { AppError } from "../utils/appError";
 
 export const productService = {
   getProducts: async (page: number = 1) => {
     try {
-      const SKIP = (page - 1) * 10;
+      const skip = (page - 1) * 10;
 
-      // 1. Get total count
-      const totalCount = await prisma.products.count({
-        where: { isActive: true }, // Filter to count only active products
-      });
+      const totalCount = await productModels.count();
 
-      // 2. Get paginated data
-      const products = await prisma.products.findMany({
-        where: { isActive: true }, // Only show active products
-        orderBy: { createdAt: "desc" },
-        take: 10,
-        skip: SKIP,
-      });
+      const products = await productModels.getAll(page, skip);
 
-      // 3. Calculate total pages
       const totalPages = Math.ceil(totalCount / 10);
 
       return {
-        products: products,
+        products,
         totalProducts: totalCount,
         currentPage: page,
         totalPages: totalPages,
@@ -40,29 +32,12 @@ export const productService = {
       const startDate = getWitaDateRange(start).start;
       const endDate = getWitaDateRange(end).end;
 
-      // We use groupBy on orderItems to aggregate actual sales data
-      const topSales = await prisma.orderItems.groupBy({
-        by: ["productId"],
-        where: {
-          order: {
-            createdAt: {
-              gte: startDate,
-              lte: endDate,
-            },
-            ...(userId && { userId: userId }), // Filter by userId if provided
-            status: "COMPLETED", // Only count successful orders
-          },
-        },
+      const topSales: {
+        productId: number;
         _sum: {
-          quantity: true,
-        },
-        orderBy: {
-          _sum: {
-            quantity: "desc",
-          },
-        },
-        take: 5,
-      });
+          quantity: number | null;
+        };
+      }[] = await productModels.topSales(startDate, endDate, userId);
 
       // Now, fetch the full product details for those IDs
       const productsWithSales = await Promise.all(
@@ -79,25 +54,13 @@ export const productService = {
 
       return productsWithSales;
     } catch (error) {
-      console.error("Error fetching top products:", error);
       throw error;
     }
   },
 
   getLowStockProducts: async () => {
     try {
-      const products = await prisma.products.findMany({
-        where: {
-          isActive: true,
-          stock: {
-            lte: 10,
-          },
-        },
-        orderBy: {
-          sale: "desc",
-        },
-        take: 10,
-      });
+      const products = await productModels.lowStock();
 
       return products;
     } catch (error) {
@@ -107,9 +70,7 @@ export const productService = {
 
   findById: async (productId: number) => {
     try {
-      const product = await prisma.products.findUnique({
-        where: { id: productId },
-      });
+      const product = await productModels.findById(productId);
 
       if (!product) throw new AppError("Produk tidak ditemukan", 404);
 
@@ -121,9 +82,10 @@ export const productService = {
 
   create: async (productData: NewProduct, imageUrl: string) => {
     try {
-      const newProduct = await prisma.products.create({
-        data: { ...productData, image: imageUrl },
-      });
+      const newProduct = await productModels.create(productData, imageUrl);
+
+      if (!newProduct) throw new AppError("Gagal membuat produk", 500);
+
       return newProduct;
     } catch (error) {
       throw error;
@@ -133,27 +95,20 @@ export const productService = {
   update: async (
     productId: number,
     productData: UpdateProduct,
-    imageUrl?: string | null
+    imageUrl?: string
   ) => {
     try {
-      const { name, price, stock, category } = productData;
-
-      const existingProduct = await prisma.products.findUnique({
-        where: { id: productId },
-      });
+      const existingProduct = await productModels.findById(productId);
 
       if (!existingProduct) throw new AppError("Produk tidak ditemukan", 404);
 
-      const updatedProduct = await prisma.products.update({
-        where: { id: productId },
-        data: {
-          name: name || existingProduct.name,
-          price: price || existingProduct.price,
-          stock: stock || existingProduct.stock,
-          category: category || existingProduct.category,
-          image: imageUrl ? imageUrl : existingProduct.image,
-        },
-      });
+      const updatedProduct = await productModels.update(
+        productData,
+        existingProduct,
+        imageUrl
+      );
+
+      if (!updatedProduct) throw new AppError("Gagal edit produk", 500);
 
       return updatedProduct;
     } catch (error) {
@@ -163,20 +118,13 @@ export const productService = {
 
   delete: async (productId: number) => {
     try {
-      const existingProduct = await prisma.products.findUnique({
-        where: { id: productId },
-      });
+      const existingProduct = await productModels.findById(productId);
 
       if (!existingProduct) throw new AppError("Produk tidak ditemukan", 404);
 
-      await prisma.products.update({
-        where: { id: productId },
-        data: { isActive: false },
-      });
+      const deletedProduct = await productModels.delete(productId);
 
-      await prisma.cartItems.deleteMany({
-        where: { productId },
-      });
+      if(!deletedProduct) throw new AppError("Gagal menghapus product", 500);
     } catch (error) {
       throw error;
     }

@@ -46,8 +46,7 @@ export const OrderService = {
     userId?: number
   ) => {
     try {
-      const take = 10;
-      const skip = (page - 1) * take;
+      const skip = (page - 1) * 10;
 
       // Kita convert input string user menjadi Range WITA yang valid
       const startDate = getWitaDateRange(start).start;
@@ -57,7 +56,7 @@ export const OrderService = {
         startDate,
         endDate,
         skip,
-        take,
+        10,
         userId
       );
 
@@ -71,7 +70,7 @@ export const OrderService = {
         orders: orders,
         totalOrders: totalCount,
         currentPage: page,
-        totalPages: Math.ceil(totalCount / take),
+        totalPages: Math.ceil(totalCount / 10),
       };
     } catch (error) {
       throw error;
