@@ -389,7 +389,8 @@ export const ModelName = {
   carts: 'carts',
   cartItems: 'cartItems',
   orders: 'orders',
-  orderItems: 'orderItems'
+  orderItems: 'orderItems',
+  tokens: 'tokens'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -405,7 +406,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "users" | "products" | "carts" | "cartItems" | "orders" | "orderItems"
+    modelProps: "users" | "products" | "carts" | "cartItems" | "orders" | "orderItems" | "tokens"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -853,6 +854,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    tokens: {
+      payload: Prisma.$tokensPayload<ExtArgs>
+      fields: Prisma.tokensFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.tokensFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$tokensPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.tokensFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$tokensPayload>
+        }
+        findFirst: {
+          args: Prisma.tokensFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$tokensPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.tokensFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$tokensPayload>
+        }
+        findMany: {
+          args: Prisma.tokensFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$tokensPayload>[]
+        }
+        create: {
+          args: Prisma.tokensCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$tokensPayload>
+        }
+        createMany: {
+          args: Prisma.tokensCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.tokensCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$tokensPayload>[]
+        }
+        delete: {
+          args: Prisma.tokensDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$tokensPayload>
+        }
+        update: {
+          args: Prisma.tokensUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$tokensPayload>
+        }
+        deleteMany: {
+          args: Prisma.tokensDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.tokensUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.tokensUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$tokensPayload>[]
+        }
+        upsert: {
+          args: Prisma.tokensUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$tokensPayload>
+        }
+        aggregate: {
+          args: Prisma.TokensAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTokens>
+        }
+        groupBy: {
+          args: Prisma.tokensGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TokensGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.tokensCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TokensCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -967,6 +1042,18 @@ export const OrderItemsScalarFieldEnum = {
 } as const
 
 export type OrderItemsScalarFieldEnum = (typeof OrderItemsScalarFieldEnum)[keyof typeof OrderItemsScalarFieldEnum]
+
+
+export const TokensScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TokensScalarFieldEnum = (typeof TokensScalarFieldEnum)[keyof typeof TokensScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1188,6 +1275,7 @@ export type GlobalOmitConfig = {
   cartItems?: Prisma.cartItemsOmit
   orders?: Prisma.ordersOmit
   orderItems?: Prisma.orderItemsOmit
+  tokens?: Prisma.tokensOmit
 }
 
 /* Types for Logging */

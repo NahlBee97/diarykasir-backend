@@ -1,25 +1,15 @@
-import { prisma } from "../lib/prisma";
+import { cartItemsModels } from "../models/cartItemsModels";
+import { cartModels } from "../models/cartModels";
+import { productModels } from "../models/productModels";
 import { AppError } from "../utils/appError";
 
 export const cartService = {
   getUserCart: async (userId: number) => {
     try {
-      const cart = await prisma.carts.findFirst({
-        where: { userId },
-        include: {
-          items: {
-            orderBy: {
-              createdAt: "asc", 
-            },
-            include: {
-              product: true,
-            },
-          },
-        },
-      });
+      const cart = await cartModels.findByUserId(userId);
 
       if (!cart) {
-        throw new AppError("Cart not found", 404);
+        throw new AppError("Keranjang tidak ditemukan", 404);
       }
 
       return cart;
@@ -30,54 +20,22 @@ export const cartService = {
 
   addItem: async (userId: number, productId: number, quantity: number) => {
     try {
-      const product = await prisma.products.findUnique({
-        where: { id: productId },
-        select: { id: true, stock: true },
-      });
+      const product = await productModels.findById(productId);
 
-      if (!product) throw new AppError("Product not found.", 404);
+      if (!product) throw new AppError("Produk tidak ditemukan.", 404);
 
       if (product.stock < quantity)
-        throw new AppError("Insufficient product stock.", 400);
+        throw new AppError("Stok produk tidak mencukupi.", 400);
 
-      const cart = await prisma.carts.findFirst({
-        where: { userId },
-        include: { items: true },
-      });
+      const cart = await cartModels.findByUserId(userId);
 
-      if (!cart) throw new AppError("Cart not found", 404);
+      if (!cart) throw new AppError("Keranjang tidak ditemukan", 404);
 
-      const existingItem = await prisma.cartItems.findFirst({
-        where: { cartId: cart.id, productId },
-      });
+      const itemAdded = await cartItemsModels.addItem(cart.id, productId, quantity);
 
-      const result = await prisma.$transaction(async (tx) => {
-        if (existingItem) {
-          await tx.cartItems.update({
-            where: { id: existingItem.id },
-            data: { quantity: existingItem.quantity + quantity },
-          });
-        } else {
-          await tx.cartItems.create({
-            data: { cartId: cart.id, productId, quantity },
-          });
-        }
+      if(!itemAdded) throw new AppError("Gagal menambahkan item ke keranjang", 500);
 
-        return await tx.carts.findUnique({
-          where: { id: cart.id },
-          include: {
-            items: {
-              include: {
-                product: {
-                  select: { name: true, price: true, image: true },
-                },
-              },
-            },
-          },
-        });
-      });
-
-      return result;
+      return cart;
     } catch (error) {
       throw error;
     }
@@ -85,16 +43,13 @@ export const cartService = {
 
   updateItem: async (itemId: number, quantity: number) => {
     try {
-      const cartItem = await prisma.cartItems.findUnique({
-        where: { id: itemId },
-      });
+      const cartItem = await cartItemsModels.findById(itemId);
 
-      if (!cartItem) throw new AppError("Item not found in cart", 404);
+      if (!cartItem) throw new AppError("Item tidak ditemukan di keranjang", 404);
 
-      const updatedItem = await prisma.cartItems.update({
-        where: { id: cartItem.id },
-        data: { quantity },
-      });
+      const updatedItem = await cartItemsModels.updateItem(itemId, quantity);
+
+      if(!updatedItem) throw new AppError("Gagal update item di keranjang", 500);
 
       return updatedItem;
     } catch (error) {
@@ -104,15 +59,14 @@ export const cartService = {
 
   deleteItem: async (itemId: number) => {
     try {
-      const cartItem = await prisma.cartItems.findUnique({
-        where: { id: itemId },
-      });
+      const cartItem = await cartItemsModels.findById(itemId);
 
-      if (!cartItem) throw new AppError("Item not found in cart", 404);
+      if (!cartItem) throw new AppError("Item tidak ditemukan di keranjang", 404);
 
-      await prisma.cartItems.delete({
-        where: { id: cartItem.id },
-      });
+      const deletedItem = await cartItemsModels.deleteItem(itemId);
+
+      if (!deletedItem) throw new AppError("Gagal menghapus item", 500);
+      return deletedItem;
     } catch (error) {
       throw error;
     }

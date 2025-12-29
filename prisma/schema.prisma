@@ -35,6 +35,7 @@ model users {
   // Relations
   orders    orders[]
   cart     carts[]
+  tokens    tokens[]
 }
 
 model products {
@@ -104,4 +105,16 @@ model orderItems {
   
   productId Int
   product   products @relation(fields: [productId], references: [id])
+}
+
+model tokens {
+  id        Int      @id @default(autoincrement())
+  userId   Int
+  token     String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user      users    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

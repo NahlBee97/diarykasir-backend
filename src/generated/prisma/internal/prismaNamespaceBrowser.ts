@@ -56,7 +56,8 @@ export const ModelName = {
   carts: 'carts',
   cartItems: 'cartItems',
   orders: 'orders',
-  orderItems: 'orderItems'
+  orderItems: 'orderItems',
+  tokens: 'tokens'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -150,6 +151,18 @@ export const OrderItemsScalarFieldEnum = {
 } as const
 
 export type OrderItemsScalarFieldEnum = (typeof OrderItemsScalarFieldEnum)[keyof typeof OrderItemsScalarFieldEnum]
+
+
+export const TokensScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TokensScalarFieldEnum = (typeof TokensScalarFieldEnum)[keyof typeof TokensScalarFieldEnum]
 
 
 export const SortOrder = {

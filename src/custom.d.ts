@@ -3,7 +3,6 @@ import { UserRoles } from "@prisma/client";
 export interface IUserReqParam {
   id: number; 
   name: string;
-  email: string;
   role: UserRoles;
 }
 

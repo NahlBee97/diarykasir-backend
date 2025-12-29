@@ -12,13 +12,13 @@ export async function VerifyToken(
     const token = req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
-      throw new AppError("Unauthorized: No token provided", 401);
+      throw new AppError("Unauthorized: No token provided", 403);
     }
 
     const decodedPayload = verify(token, String(process.env.JWT_SECRET)) as JwtPayload;
 
     if (!decodedPayload.id || !decodedPayload.role) {
-      throw new AppError("Invalid token: Payload missing required fields", 401);
+      throw new AppError("Invalid token: Payload missing required fields", 403);
     }
 
     req.user = decodedPayload as IUserReqParam;

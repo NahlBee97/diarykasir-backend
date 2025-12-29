@@ -2,6 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import { NewProduct, UpdateProduct } from "../interfaces/productInterface";
 import { productService } from "../services/productServices";
 import { uploadImageToSupabase } from "../helper/imageUpload";
+import {
+  createProductSchema,
+  updateProductSchema,
+} from "../schemas/productSchemas";
 
 export const productController = {
   getProducts: async (req: Request, res: Response, next: NextFunction) => {
@@ -66,7 +70,12 @@ export const productController = {
 
   create: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const productData = req.body as NewProduct;
+      const validation = createProductSchema.safeParse(req.body as NewProduct);
+
+      if (!validation.success) {
+        return next();
+      }
+
       const file = req.file;
 
       if (!file) {
@@ -76,7 +85,9 @@ export const productController = {
       const imageUrl = await uploadImageToSupabase(file);
 
       const newProduct = await productService.create(
-        { ...productData, price: Number(productData.price), stock: Number(productData.stock) },
+        {
+          ...validation.data,
+        },
         imageUrl
       );
       res
@@ -90,14 +101,20 @@ export const productController = {
   update: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const productId = req.params.id as string;
-      const productData = req.body as UpdateProduct;
+      const validation = updateProductSchema.safeParse(req.body as UpdateProduct);
+
+      if (!validation.success) {
+        return next();
+      }
       const file = req.file;
 
-      const imageUrl = file ? await uploadImageToSupabase(file) : null;
+      const imageUrl = file ? await uploadImageToSupabase(file) : undefined;
 
       const updatedProduct = await productService.update(
         Number(productId),
-        { ...productData, price: Number(productData.price), stock: Number(productData.stock) },
+        {
+          ...validation.data,
+        },
         imageUrl
       );
       res

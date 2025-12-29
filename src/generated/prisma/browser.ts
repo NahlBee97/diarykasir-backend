@@ -47,3 +47,8 @@ export type orders = Prisma.ordersModel
  * 
  */
 export type orderItems = Prisma.orderItemsModel
+/**
+ * Model tokens
+ * 
+ */
+export type tokens = Prisma.tokensModel

@@ -1,10 +1,18 @@
 import { Request, Response, NextFunction } from "express";
 import { OrderService } from "../services/orderServices";
+import { NewOrder } from "../interfaces/orderInterface";
 
 export const orderController = {
   createOrder: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const newOrder = await OrderService.createOrder(req.body);
+      const orderData: NewOrder = {
+        userId: req.body.userId,
+        totalAmount: req.body.totalAmount,
+        paymentCash: req.body.paymentCash,
+        paymentChange: req.body.paymentChange,
+      };
+      
+      const newOrder = await OrderService.createOrder(orderData);
 
       res
         .status(201)
@@ -38,9 +46,16 @@ export const orderController = {
     try {
       const { start, end, page, userId } = req.query;
 
-      const ordersData = await OrderService.getAllOrders(start as string, end as string, Number(page), userId ? Number(userId) : undefined);
+      const ordersData = await OrderService.getAllOrders(
+        start as string,
+        end as string,
+        Number(page),
+        userId ? Number(userId) : undefined
+      );
 
-      res.status(200).json({ message: "Get all orders data successfully", ordersData });
+      res
+        .status(200)
+        .json({ message: "Get all orders data successfully", ordersData });
     } catch (error) {
       next(error);
     }
@@ -61,8 +76,12 @@ export const orderController = {
 
   getOrderSummary: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const {start, end, userId} = req.query;
-      const summary = await OrderService.getOrderSummary(start as string, end as string, userId ? Number(userId) : undefined);
+      const { start, end, userId } = req.query;
+      const summary = await OrderService.getOrderSummary(
+        start as string,
+        end as string,
+        userId ? Number(userId) : undefined
+      );
 
       res
         .status(200)
