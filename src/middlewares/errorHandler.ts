@@ -24,7 +24,7 @@ export function errorHandler(
 
     return res.status(400).json({
       success: false,
-      message: "Validation failed",
+      message: "Terjadi kesalahan pada data yang dikirimkan.",
       errors: formattedErrors, 
     });
   }
@@ -32,14 +32,14 @@ export function errorHandler(
   if (error instanceof TokenExpiredError) {
     return res.status(401).json({
       success: false,
-      message: "Session expired. Please log in again",
+      message: "Sesi telah habis. Silahkan login kembali.",
     });
   }
 
   if (error instanceof JsonWebTokenError) {
     return res.status(401).json({
       success: false,
-      message: "Invalid session token. Please log in again",
+      message: "Token sesi tidak valid. Silahkan login kembali.",
     });
   }
 
@@ -47,6 +47,6 @@ export function errorHandler(
 
   return res.status(500).json({
     success: false,
-    message: "Internal Server Error. Please try again later.",
+    message: "Periksa koneksi internet, dan coba lagi.",
   });
 }

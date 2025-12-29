@@ -9,7 +9,7 @@ export const cartService = {
       const cart = await cartModels.findByUserId(userId);
 
       if (!cart) {
-        throw new AppError("Cart not found", 404);
+        throw new AppError("Keranjang tidak ditemukan", 404);
       }
 
       return cart;
@@ -22,14 +22,14 @@ export const cartService = {
     try {
       const product = await productModels.findById(productId);
 
-      if (!product) throw new AppError("Product not found.", 404);
+      if (!product) throw new AppError("Produk tidak ditemukan.", 404);
 
       if (product.stock < quantity)
-        throw new AppError("Insufficient product stock.", 400);
+        throw new AppError("Stok produk tidak mencukupi.", 400);
 
       const cart = await cartModels.findByUserId(userId);
 
-      if (!cart) throw new AppError("Cart not found", 404);
+      if (!cart) throw new AppError("Keranjang tidak ditemukan", 404);
 
       await cartItemsModels.addItem(cart.id, productId, quantity);
 
@@ -43,7 +43,7 @@ export const cartService = {
     try {
       const cartItem = await cartItemsModels.findById(itemId);
 
-      if (!cartItem) throw new AppError("Item not found in cart", 404);
+      if (!cartItem) throw new AppError("Item tidak ditemukan di keranjang", 404);
 
       const updatedItem = await cartItemsModels.updateItem(itemId, quantity);
 
@@ -57,12 +57,11 @@ export const cartService = {
     try {
       const cartItem = await cartItemsModels.findById(itemId);
 
-      if (!cartItem) throw new AppError("Item not found in cart", 404);
+      if (!cartItem) throw new AppError("Item tidak ditemukan di keranjang", 404);
 
       const deletedItem = await cartItemsModels.deleteItem(itemId);
 
-      if (!deletedItem) throw new AppError("Failed to delete item", 500);
-
+      if (!deletedItem) throw new AppError("Gagal menghapus item", 500);
       return deletedItem;
     } catch (error) {
       throw error;

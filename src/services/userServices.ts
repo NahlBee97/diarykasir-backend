@@ -38,7 +38,7 @@ export const userService = {
     });
 
     if (existingUser) {
-      throw new Error("User with this name already exists");
+      throw new Error("Kasir dengan nama tersebut sudah ada.");
     }
 
     const hashedPin = await bcrypt.hash(userData.pin, 10);

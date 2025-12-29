@@ -111,7 +111,7 @@ export const productService = {
         where: { id: productId },
       });
 
-      if (!product) throw new AppError("Product not found", 404);
+      if (!product) throw new AppError("Produk tidak ditemukan", 404);
 
       return product;
     } catch (error) {
@@ -142,7 +142,7 @@ export const productService = {
         where: { id: productId },
       });
 
-      if (!existingProduct) throw new AppError("Product not found", 404);
+      if (!existingProduct) throw new AppError("Produk tidak ditemukan", 404);
 
       const updatedProduct = await prisma.products.update({
         where: { id: productId },
@@ -167,7 +167,7 @@ export const productService = {
         where: { id: productId },
       });
 
-      if (!existingProduct) throw new AppError("Product not found", 404);
+      if (!existingProduct) throw new AppError("Produk tidak ditemukan", 404);
 
       await prisma.products.update({
         where: { id: productId },

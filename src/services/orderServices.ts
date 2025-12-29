@@ -1,8 +1,8 @@
 import { getWitaDateRange } from "../helper/getWitaDateRange";
-import { createOrder, validateCartItems } from "../helper/orderHelpers";
+import { validateCartItems } from "../helper/orderHelpers";
 import { CartItem } from "../interfaces/cartInterface";
 import { NewOrder } from "../interfaces/orderInterface";
-import { prisma } from "../lib/prisma";
+import { orderModel } from "../models/orderModels";
 import { AppError } from "../utils/appError";
 import { cartService } from "./cartServices";
 
@@ -12,13 +12,16 @@ export const OrderService = {
       const cart = await cartService.getUserCart(orderData.userId);
 
       if (!cart?.items?.length) {
-        throw new AppError("Cart is empty", 400);
+        throw new AppError("Keranjang kosong", 400);
       }
 
       await validateCartItems(cart.items as CartItem[]);
 
-      // Step 4: Create order in transaction
-      const newOrder = await createOrder(orderData, cart);
+      const newOrder = await orderModel.create(orderData, cart);
+
+      if (!newOrder) {
+        throw new AppError("Gagal membuat pesanan", 500);
+      }
 
       return newOrder;
     } catch (error) {
@@ -28,17 +31,7 @@ export const OrderService = {
 
   getOrderItemsByOrderId: async (orderId: number) => {
     try {
-      const orderItems = await prisma.orderItems.findMany({
-        where: {
-          orderId,
-        },
-        include: {
-          product: true,
-        },
-      });
-
-      if (orderItems.length === 0)
-        throw new AppError("order items not found", 404);
+      const orderItems = await orderModel.getOrderItemsByOrderId(orderId);
 
       return orderItems;
     } catch (error) {
@@ -46,48 +39,39 @@ export const OrderService = {
     }
   },
 
-  getAllOrders: async (start: string, end: string, page: number = 1, userId?: number) => {
+  getAllOrders: async (
+    start: string,
+    end: string,
+    page: number = 1,
+    userId?: number
+  ) => {
     try {
-      const TAKE = 10;
-      const SKIP = (page - 1) * TAKE;
+      const take = 10;
+      const skip = (page - 1) * take;
 
       // Kita convert input string user menjadi Range WITA yang valid
       const startDate = getWitaDateRange(start).start;
       const endDate = getWitaDateRange(end).end;
 
-      const orders = await prisma.orders.findMany({
-        where: {
-          createdAt: {
-            gte: startDate,
-            lte: endDate,
-          },
-          ...(userId ? { userId: userId } : {}),
-        },
-        include: {
-          user: true,
-          items: {
-            include: { product: true },
-          },
-        },
-        orderBy: { createdAt: "desc" },
-        take: TAKE,
-        skip: SKIP,
-      });
+      const orders = await orderModel.getAllOrders(
+        startDate,
+        endDate,
+        skip,
+        take,
+        userId
+      );
 
-      const totalCount = await prisma.orders.count({
-        where: {
-          createdAt: {
-            gte: startDate,
-            lte: endDate,
-          },
-        },
-      });
+      const totalCount = await orderModel.getOrderCount(
+        startDate,
+        endDate,
+        userId
+      );
 
       return {
         orders: orders,
         totalOrders: totalCount,
         currentPage: page,
-        totalPages: Math.ceil(totalCount / TAKE),
+        totalPages: Math.ceil(totalCount / take),
       };
     } catch (error) {
       throw error;
@@ -96,42 +80,20 @@ export const OrderService = {
 
   getOrderSummary: async (start: string, end: string, userId?: number) => {
     try {
-      // --- PERBAIKAN TIMEZONE DI SINI ---
       const startDate = getWitaDateRange(start).start;
       const endDate = getWitaDateRange(end).end;
 
-      const filter = {
-        createdAt: {
-          gte: startDate,
-          lte: endDate,
-        },
-        ...(userId ? { userId: userId } : {}),
-        status: "COMPLETED" as const,
-      };
-
-      const summaryData = await prisma.orders.aggregate({
-        where: filter,
-        _sum: { totalAmount: true },
-        _count: { id: true },
-      });
-
-      const itemsSoldData = await prisma.orderItems.aggregate({
-        _sum: { quantity: true },
-        where: {
-          order: { ...filter },
-        },
-      });
-
-      const totalRevenue = Number(summaryData._sum.totalAmount || 0);
-      const totalSales = summaryData._count.id || 0;
-      const itemsSold = Number(itemsSoldData._sum.quantity || 0);
-      const averageSaleValue = totalSales > 0 ? totalRevenue / totalSales : 0;
+      const summaryData = await orderModel.getSummary(
+        startDate,
+        endDate,
+        userId
+      );
 
       return {
-        totalRevenue,
-        totalSales,
-        averageSaleValue: Math.round(averageSaleValue),
-        itemsSold,
+        totalRevenue: summaryData.totalRevenue,
+        totalSales: summaryData.totalSales,
+        averageSaleValue: Math.round(summaryData.averageSaleValue),
+        itemsSold: summaryData.itemsSold,
       };
     } catch (error) {
       throw error;
@@ -140,19 +102,7 @@ export const OrderService = {
 
   getTodayOrders: async (userId?: number) => {
     try {
-      const { start } = getWitaDateRange();
-
-      const orders = await prisma.orders.findMany({
-        where: {
-          createdAt: {
-            gte: start,
-          },
-          ...(userId ? { userId: userId } : {}),
-        },
-        include: { user: true, items: { include: { product: true } } },
-        orderBy: { createdAt: "desc" },
-      });
-
+      const orders = await orderModel.getTodayOrders(userId);
       return orders;
     } catch (error) {
       throw error;
