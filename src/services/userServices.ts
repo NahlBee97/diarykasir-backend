@@ -1,85 +1,62 @@
-import { Shift } from "../generated/prisma/enums";
-import { prisma } from "../lib/prisma";
-import bcrypt from "bcryptjs"
+import bcrypt from "bcryptjs";
+import { userModels } from "../models/userModels";
+import { AppError } from "../utils/appError";
+import { NewUser, UpdateUser } from "../interfaces/userInterface";
 
 export const userService = {
   getAllUsers: async () => {
-    const users = await prisma.users.findMany({
-      where: {
-        role: "CASHIER",
-        isActive: true,
-      },
-      select: {
-        id: true,
-        name: true,
-        shift: true,
-      },
-      orderBy: { createdAt: "desc" },
-    });
+    const users = await userModels.getAll();
 
     return users;
   },
   getUserById: async (userId: number) => {
-    const user = await prisma.users.findUnique({
-      where: { id: userId },
-      select: {
-        id: true,
-        name: true,
-        shift: true,
-        pin: true,
-      },
-    });
+    const user = await userModels.findById(userId);
+
+    if (!user) throw new AppError("Kasir tidak ditemukan", 404);
 
     return user;
   },
-  createUser: async (userData: { name: string; shift: Shift; pin: string }) => {
-    const existingUser = await prisma.users.findFirst({
-      where: { name: userData.name },
-    });
+  createUser: async (userData: NewUser) => {
+    const { name, shift, pin } = userData;
+
+    const existingUser = await userModels.findByName(name);
 
     if (existingUser) {
-      throw new Error("Kasir dengan nama tersebut sudah ada.");
+      throw new AppError("Kasir dengan nama tersebut sudah ada", 401);
     }
 
-    const hashedPin = await bcrypt.hash(userData.pin, 10);
+    const hashedPin = await bcrypt.hash(pin, 10);
 
-    const newUser = await prisma.users.create({
-      data: {
-        name: userData.name,
-        shift: userData.shift,
-        pin: hashedPin,
-        role: "CASHIER",
-      },
-    });
+    const newUser = await userModels.create(name, shift, hashedPin);
 
-    await prisma.carts.create({
-      data: {
-        userId: newUser.id,
-        quantity: 0,
-      },
-    });
+    if (!newUser) throw new AppError("Gagal mendaftarkan kasir", 500);
 
     return newUser;
   },
-  updateUser: async (
-    userId: number,
-    updateData: { name: string; shift: Shift; pin: string }
-  ) => {
-    const updatedUser = await prisma.users.update({
-      where: { id: userId },
-      data: {
-        name: updateData.name,
-        shift: updateData.shift,
-        pin: updateData.pin,
-      },
-    });
+  updateUser: async (userId: number, updateData: UpdateUser) => {
+    const existingUser = await userModels.findById(userId);
 
+    if (!existingUser) throw new AppError("Kasir tidak ditemukan", 404);
+
+    const hashedPin = updateData.pin
+      ? await bcrypt.hash(updateData.pin as string, 10)
+      : updateData.pin;
+
+    const updatedUser = await userModels.update(
+      updateData,
+      existingUser,
+      hashedPin as string
+    );
+
+    if (!updatedUser) throw new AppError("Gagal update user", 500);
+    
     return updatedUser;
   },
   deleteUser: async (userId: number) => {
-    await prisma.users.update({
-      where: { id: userId },
-      data: { isActive: false },
-    });
+    const deletedUser = await userModels.delete(userId);
+    
+    if (!deletedUser) throw new AppError("Gagal hapus user", 500);
+
+    return deletedUser;
   },
 };
