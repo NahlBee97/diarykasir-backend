@@ -5,12 +5,11 @@ import { productController } from "../controllers/productControllers";
 import { upload } from "../utils/multer";
 import { validateRequest } from "../middlewares/validationMiddleware";
 import {
-  createProductSchema,
   deleteProductSchema,
   findProductByIdSchema,
   getProductsSchema,
   getTopProductsSchema,
-  updateProductSchema,
+  updateProductParamsSchmema,
 } from "../schemas/productSchemas";
 
 const router = Router();
@@ -44,7 +43,6 @@ router.post(
   "/",
   VerifyToken,
   RoleGuard,
-  validateRequest(createProductSchema),
   upload.single("file"),
   productController.create
 );
@@ -52,7 +50,7 @@ router.put(
   "/:id",
   VerifyToken,
   RoleGuard,
-  validateRequest(updateProductSchema),
+  validateRequest(updateProductParamsSchmema),
   upload.single("file"),
   productController.update
 );
