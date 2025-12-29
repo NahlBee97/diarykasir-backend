@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { JwtPayload, verify } from "jsonwebtoken";
 import { AppError } from "../utils/appError";
 import { IUserReqParam } from "../custom";
+import { authModels } from "../models/authModels";
 
 export async function VerifyToken(
   req: Request,
@@ -11,11 +12,18 @@ export async function VerifyToken(
   try {
     const token = req.header("Authorization")?.replace("Bearer ", "");
 
+    const isActive = await authModels.checkToken(token as string);
+
+    if (!isActive) throw new AppError("Invalid Token", 403);
+
     if (!token) {
       throw new AppError("Unauthorized: No token provided", 403);
     }
 
-    const decodedPayload = verify(token, String(process.env.JWT_SECRET)) as JwtPayload;
+    const decodedPayload = verify(
+      token,
+      String(process.env.JWT_SECRET)
+    ) as JwtPayload;
 
     if (!decodedPayload.id || !decodedPayload.role) {
       throw new AppError("Invalid token: Payload missing required fields", 403);
