@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { userModels } from "../models/userModels";
 import { AppError } from "../utils/appError";
 import { NewUser, UpdateUser } from "../interfaces/userInterface";
+import { authModels } from "../models/authModels";
 
 export const userService = {
   getAllUsers: async () => {
@@ -34,7 +35,7 @@ export const userService = {
     return newUser;
   },
   updateUser: async (userId: number, updateData: UpdateUser) => {
-    const existingUser = await userModels.findById(userId);
+    const existingUser = await authModels.findUser(userId);
 
     if (!existingUser) throw new AppError("Kasir tidak ditemukan", 404);
 

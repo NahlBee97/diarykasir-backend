@@ -29,6 +29,11 @@ export const userModels = {
     try {
       const user = await prisma.users.findUnique({
         where: { id: userId },
+        select: {
+          id: true,
+          name: true,
+          shift: true,
+        },
       });
 
       return user;
@@ -41,6 +46,11 @@ export const userModels = {
     try {
       const user = await prisma.users.findFirst({
         where: { name },
+        select: {
+          id: true,
+          name: true,
+          shift: true,
+        },
       });
       return user;
     } catch (error) {
@@ -55,7 +65,6 @@ export const userModels = {
           name,
           shift,
           pin,
-          role: "CASHIER",
         },
       });
 
