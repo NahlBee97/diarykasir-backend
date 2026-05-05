@@ -4,6 +4,6 @@ export interface User {
   id: number;
   name: string;
   shift: Shift;
-  pin: string;
+  password: string;
   role: Role;
 }

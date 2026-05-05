@@ -4,15 +4,15 @@ import { AppError } from "../utils/appError";
 import jwt from "jsonwebtoken";
 
 export const authService = {
-  login: async (userId: number, pin: string) => {
+  login: async (userId: number, password: string) => {
     try {
       const user = await authModels.findUser(userId);
 
-      if (!user) throw new AppError("Kasir tidak ditemukan", 404);
+      if (!user) throw new AppError("Pengguna tidak ditemukan", 404);
 
-      const checkPin = await bcrypt.compare(pin, user.pin as string);
+      const checkPassword = await bcrypt.compare(password, user.password as string);
 
-      if (!checkPin) throw new AppError("PIN Salah", 401);
+      if (!checkPassword) throw new AppError("Password Salah", 401);
       const payload = {
         id: user.id,
         role: user.role,

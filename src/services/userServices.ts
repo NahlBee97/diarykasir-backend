@@ -18,7 +18,7 @@ export const userService = {
     return user;
   },
   createUser: async (userData: NewUser) => {
-    const { name, shift, pin } = userData;
+    const { name, shift, password } = userData;
 
     const existingUser = await userModels.findByName(name);
 
@@ -26,7 +26,7 @@ export const userService = {
       throw new AppError("Kasir dengan nama tersebut sudah ada", 401);
     }
 
-    const hashedPin = await bcrypt.hash(pin, 10);
+    const hashedPin = await bcrypt.hash(password, 10);
 
     const newUser = await userModels.create(name, shift, hashedPin);
 
@@ -39,9 +39,9 @@ export const userService = {
 
     if (!existingUser) throw new AppError("Kasir tidak ditemukan", 404);
 
-    const hashedPin = updateData.pin
-      ? await bcrypt.hash(updateData.pin as string, 10)
-      : updateData.pin;
+    const hashedPin = updateData.password
+      ? await bcrypt.hash(updateData.password as string, 10)
+      : updateData.password;
 
     const updatedUser = await userModels.update(
       updateData,
