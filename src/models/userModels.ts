@@ -13,6 +13,7 @@ export const userModels = {
         select: {
           id: true,
           name: true,
+          role: true,
           shift: true,
         },
         orderBy: { createdAt: "asc" },
