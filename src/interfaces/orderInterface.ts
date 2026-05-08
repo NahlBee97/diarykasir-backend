@@ -23,6 +23,7 @@ export interface OrderItem {
 
 export interface NewOrder {
   userId: number;
+  customerName: string;
   totalAmount: number;
   paymentCash: number;
   paymentChange: number;

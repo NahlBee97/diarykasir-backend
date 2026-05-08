@@ -63,6 +63,7 @@ export const orderModel = {
         const order = await tx.orders.create({
           data: {
             userId: orderData.userId,
+            customerName: orderData.customerName,
             totalAmount: orderData.totalAmount,
             paymentCash: orderData.paymentCash,
             paymentChange: orderData.paymentChange,
