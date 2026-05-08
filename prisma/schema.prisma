@@ -83,6 +83,7 @@ model cartItems {
 model orders {
   id            Int         @id @default(autoincrement())
   userId        Int
+  customerName  String @default("no name")
   totalAmount   Int     
   paymentCash   Int     
   paymentChange Int     
