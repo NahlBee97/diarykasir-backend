@@ -83,7 +83,7 @@ export const userModels = {
   update: async (
     updateData: UpdateUser,
     existingUser: User,
-    hashedPin: string
+    hashedPassword: string
   ) => {
     try {
       const updatedUser = await prisma.users.update({
@@ -91,7 +91,7 @@ export const userModels = {
         data: {
           name: updateData.name || existingUser.name,
           shift: updateData.shift || existingUser.shift,
-          password: hashedPin || existingUser.password,
+          password: hashedPassword || existingUser.password,
         },
       });
 
