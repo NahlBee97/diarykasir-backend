@@ -970,7 +970,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const UsersScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  pin: 'pin',
+  password: 'password',
   role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -1023,6 +1023,7 @@ export type CartItemsScalarFieldEnum = (typeof CartItemsScalarFieldEnum)[keyof t
 export const OrdersScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  customerName: 'customerName',
   totalAmount: 'totalAmount',
   paymentCash: 'paymentCash',
   paymentChange: 'paymentChange',

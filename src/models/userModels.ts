@@ -8,15 +8,15 @@ export const userModels = {
     try {
       const users = await prisma.users.findMany({
         where: {
-          role: "CASHIER",
           isActive: true,
         },
         select: {
           id: true,
           name: true,
+          role: true,
           shift: true,
         },
-        orderBy: { createdAt: "desc" },
+        orderBy: { createdAt: "asc" },
       });
 
       return users;
@@ -58,13 +58,13 @@ export const userModels = {
     }
   },
 
-  create: async (name: string, shift: Shift, pin: string) => {
+  create: async (name: string, shift: Shift, password: string) => {
     try {
       const newUser = await prisma.users.create({
         data: {
           name,
           shift,
-          pin,
+          password,
         },
       });
 
@@ -83,7 +83,7 @@ export const userModels = {
   update: async (
     updateData: UpdateUser,
     existingUser: User,
-    hashedPin: string
+    hashedPassword: string
   ) => {
     try {
       const updatedUser = await prisma.users.update({
@@ -91,7 +91,7 @@ export const userModels = {
         data: {
           name: updateData.name || existingUser.name,
           shift: updateData.shift || existingUser.shift,
-          pin: hashedPin || existingUser.pin,
+          password: hashedPassword || existingUser.password,
         },
       });
 

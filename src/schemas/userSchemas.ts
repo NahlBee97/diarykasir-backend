@@ -3,7 +3,7 @@ import { z } from "zod";
 export const createUserSchema = z.object({
   body: z.object({
     name: z.string().min(1, "Name is required"),
-    pin: z.string().min(1, "PIN is required"),
+    password: z.string().min(1, "PIN is required"),
     shift: z.string().min(1, "Shift is required"),
   }),
 });
@@ -18,7 +18,7 @@ export const updateUserSchema = z.object({
   body: z
     .object({
       name: z.string().min(1, "Name is required").optional(),
-      pin: z.string().min(1, "PIN is required").optional(),
+      password: z.string().min(1, "PIN is required").optional(),
       shift: z.string().min(1, "Shift is required").optional(),
     })
     .partial(),

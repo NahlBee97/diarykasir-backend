@@ -25,7 +25,7 @@ enum Shift {
 model users {
   id        Int      @id @default(autoincrement())
   name      String
-  pin       String   
+  password  String   
   role      Role     @default(CASHIER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -83,6 +83,7 @@ model cartItems {
 model orders {
   id            Int         @id @default(autoincrement())
   userId        Int
+  customerName  String @default("no name")
   totalAmount   Int     
   paymentCash   Int     
   paymentChange Int     

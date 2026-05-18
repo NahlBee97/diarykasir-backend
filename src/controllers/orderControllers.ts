@@ -7,6 +7,7 @@ export const orderController = {
     try {
       const orderData: NewOrder = {
         userId: req.body.userId,
+        customerName: req.body.customerName === "" ? "no name" : req.body.customerName,
         totalAmount: req.body.totalAmount,
         paymentCash: req.body.paymentCash,
         paymentChange: req.body.paymentChange,

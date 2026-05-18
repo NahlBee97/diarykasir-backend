@@ -45,6 +45,7 @@ export type OrdersSumAggregateOutputType = {
 export type OrdersMinAggregateOutputType = {
   id: number | null
   userId: number | null
+  customerName: string | null
   totalAmount: number | null
   paymentCash: number | null
   paymentChange: number | null
@@ -55,6 +56,7 @@ export type OrdersMinAggregateOutputType = {
 export type OrdersMaxAggregateOutputType = {
   id: number | null
   userId: number | null
+  customerName: string | null
   totalAmount: number | null
   paymentCash: number | null
   paymentChange: number | null
@@ -65,6 +67,7 @@ export type OrdersMaxAggregateOutputType = {
 export type OrdersCountAggregateOutputType = {
   id: number
   userId: number
+  customerName: number
   totalAmount: number
   paymentCash: number
   paymentChange: number
@@ -93,6 +96,7 @@ export type OrdersSumAggregateInputType = {
 export type OrdersMinAggregateInputType = {
   id?: true
   userId?: true
+  customerName?: true
   totalAmount?: true
   paymentCash?: true
   paymentChange?: true
@@ -103,6 +107,7 @@ export type OrdersMinAggregateInputType = {
 export type OrdersMaxAggregateInputType = {
   id?: true
   userId?: true
+  customerName?: true
   totalAmount?: true
   paymentCash?: true
   paymentChange?: true
@@ -113,6 +118,7 @@ export type OrdersMaxAggregateInputType = {
 export type OrdersCountAggregateInputType = {
   id?: true
   userId?: true
+  customerName?: true
   totalAmount?: true
   paymentCash?: true
   paymentChange?: true
@@ -210,6 +216,7 @@ export type ordersGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type OrdersGroupByOutputType = {
   id: number
   userId: number
+  customerName: string
   totalAmount: number
   paymentCash: number
   paymentChange: number
@@ -243,6 +250,7 @@ export type ordersWhereInput = {
   NOT?: Prisma.ordersWhereInput | Prisma.ordersWhereInput[]
   id?: Prisma.IntFilter<"orders"> | number
   userId?: Prisma.IntFilter<"orders"> | number
+  customerName?: Prisma.StringFilter<"orders"> | string
   totalAmount?: Prisma.IntFilter<"orders"> | number
   paymentCash?: Prisma.IntFilter<"orders"> | number
   paymentChange?: Prisma.IntFilter<"orders"> | number
@@ -255,6 +263,7 @@ export type ordersWhereInput = {
 export type ordersOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  customerName?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
   paymentCash?: Prisma.SortOrder
   paymentChange?: Prisma.SortOrder
@@ -270,6 +279,7 @@ export type ordersWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ordersWhereInput[]
   NOT?: Prisma.ordersWhereInput | Prisma.ordersWhereInput[]
   userId?: Prisma.IntFilter<"orders"> | number
+  customerName?: Prisma.StringFilter<"orders"> | string
   totalAmount?: Prisma.IntFilter<"orders"> | number
   paymentCash?: Prisma.IntFilter<"orders"> | number
   paymentChange?: Prisma.IntFilter<"orders"> | number
@@ -282,6 +292,7 @@ export type ordersWhereUniqueInput = Prisma.AtLeast<{
 export type ordersOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  customerName?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
   paymentCash?: Prisma.SortOrder
   paymentChange?: Prisma.SortOrder
@@ -300,6 +311,7 @@ export type ordersScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ordersScalarWhereWithAggregatesInput | Prisma.ordersScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"orders"> | number
   userId?: Prisma.IntWithAggregatesFilter<"orders"> | number
+  customerName?: Prisma.StringWithAggregatesFilter<"orders"> | string
   totalAmount?: Prisma.IntWithAggregatesFilter<"orders"> | number
   paymentCash?: Prisma.IntWithAggregatesFilter<"orders"> | number
   paymentChange?: Prisma.IntWithAggregatesFilter<"orders"> | number
@@ -308,6 +320,7 @@ export type ordersScalarWhereWithAggregatesInput = {
 }
 
 export type ordersCreateInput = {
+  customerName?: string
   totalAmount: number
   paymentCash: number
   paymentChange: number
@@ -320,6 +333,7 @@ export type ordersCreateInput = {
 export type ordersUncheckedCreateInput = {
   id?: number
   userId: number
+  customerName?: string
   totalAmount: number
   paymentCash: number
   paymentChange: number
@@ -329,6 +343,7 @@ export type ordersUncheckedCreateInput = {
 }
 
 export type ordersUpdateInput = {
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   paymentCash?: Prisma.IntFieldUpdateOperationsInput | number
   paymentChange?: Prisma.IntFieldUpdateOperationsInput | number
@@ -341,6 +356,7 @@ export type ordersUpdateInput = {
 export type ordersUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   paymentCash?: Prisma.IntFieldUpdateOperationsInput | number
   paymentChange?: Prisma.IntFieldUpdateOperationsInput | number
@@ -352,6 +368,7 @@ export type ordersUncheckedUpdateInput = {
 export type ordersCreateManyInput = {
   id?: number
   userId: number
+  customerName?: string
   totalAmount: number
   paymentCash: number
   paymentChange: number
@@ -360,6 +377,7 @@ export type ordersCreateManyInput = {
 }
 
 export type ordersUpdateManyMutationInput = {
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   paymentCash?: Prisma.IntFieldUpdateOperationsInput | number
   paymentChange?: Prisma.IntFieldUpdateOperationsInput | number
@@ -370,6 +388,7 @@ export type ordersUpdateManyMutationInput = {
 export type ordersUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   paymentCash?: Prisma.IntFieldUpdateOperationsInput | number
   paymentChange?: Prisma.IntFieldUpdateOperationsInput | number
@@ -390,6 +409,7 @@ export type ordersOrderByRelationAggregateInput = {
 export type ordersCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  customerName?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
   paymentCash?: Prisma.SortOrder
   paymentChange?: Prisma.SortOrder
@@ -408,6 +428,7 @@ export type ordersAvgOrderByAggregateInput = {
 export type ordersMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  customerName?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
   paymentCash?: Prisma.SortOrder
   paymentChange?: Prisma.SortOrder
@@ -418,6 +439,7 @@ export type ordersMaxOrderByAggregateInput = {
 export type ordersMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  customerName?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
   paymentCash?: Prisma.SortOrder
   paymentChange?: Prisma.SortOrder
@@ -499,6 +521,7 @@ export type ordersUpdateOneRequiredWithoutItemsNestedInput = {
 }
 
 export type ordersCreateWithoutUserInput = {
+  customerName?: string
   totalAmount: number
   paymentCash: number
   paymentChange: number
@@ -509,6 +532,7 @@ export type ordersCreateWithoutUserInput = {
 
 export type ordersUncheckedCreateWithoutUserInput = {
   id?: number
+  customerName?: string
   totalAmount: number
   paymentCash: number
   paymentChange: number
@@ -549,6 +573,7 @@ export type ordersScalarWhereInput = {
   NOT?: Prisma.ordersScalarWhereInput | Prisma.ordersScalarWhereInput[]
   id?: Prisma.IntFilter<"orders"> | number
   userId?: Prisma.IntFilter<"orders"> | number
+  customerName?: Prisma.StringFilter<"orders"> | string
   totalAmount?: Prisma.IntFilter<"orders"> | number
   paymentCash?: Prisma.IntFilter<"orders"> | number
   paymentChange?: Prisma.IntFilter<"orders"> | number
@@ -557,6 +582,7 @@ export type ordersScalarWhereInput = {
 }
 
 export type ordersCreateWithoutItemsInput = {
+  customerName?: string
   totalAmount: number
   paymentCash: number
   paymentChange: number
@@ -568,6 +594,7 @@ export type ordersCreateWithoutItemsInput = {
 export type ordersUncheckedCreateWithoutItemsInput = {
   id?: number
   userId: number
+  customerName?: string
   totalAmount: number
   paymentCash: number
   paymentChange: number
@@ -592,6 +619,7 @@ export type ordersUpdateToOneWithWhereWithoutItemsInput = {
 }
 
 export type ordersUpdateWithoutItemsInput = {
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   paymentCash?: Prisma.IntFieldUpdateOperationsInput | number
   paymentChange?: Prisma.IntFieldUpdateOperationsInput | number
@@ -603,6 +631,7 @@ export type ordersUpdateWithoutItemsInput = {
 export type ordersUncheckedUpdateWithoutItemsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   paymentCash?: Prisma.IntFieldUpdateOperationsInput | number
   paymentChange?: Prisma.IntFieldUpdateOperationsInput | number
@@ -612,6 +641,7 @@ export type ordersUncheckedUpdateWithoutItemsInput = {
 
 export type ordersCreateManyUserInput = {
   id?: number
+  customerName?: string
   totalAmount: number
   paymentCash: number
   paymentChange: number
@@ -620,6 +650,7 @@ export type ordersCreateManyUserInput = {
 }
 
 export type ordersUpdateWithoutUserInput = {
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   paymentCash?: Prisma.IntFieldUpdateOperationsInput | number
   paymentChange?: Prisma.IntFieldUpdateOperationsInput | number
@@ -630,6 +661,7 @@ export type ordersUpdateWithoutUserInput = {
 
 export type ordersUncheckedUpdateWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   paymentCash?: Prisma.IntFieldUpdateOperationsInput | number
   paymentChange?: Prisma.IntFieldUpdateOperationsInput | number
@@ -640,6 +672,7 @@ export type ordersUncheckedUpdateWithoutUserInput = {
 
 export type ordersUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   paymentCash?: Prisma.IntFieldUpdateOperationsInput | number
   paymentChange?: Prisma.IntFieldUpdateOperationsInput | number
@@ -681,6 +714,7 @@ export type OrdersCountOutputTypeCountItemsArgs<ExtArgs extends runtime.Types.Ex
 export type ordersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  customerName?: boolean
   totalAmount?: boolean
   paymentCash?: boolean
   paymentChange?: boolean
@@ -694,6 +728,7 @@ export type ordersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type ordersSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  customerName?: boolean
   totalAmount?: boolean
   paymentCash?: boolean
   paymentChange?: boolean
@@ -705,6 +740,7 @@ export type ordersSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type ordersSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  customerName?: boolean
   totalAmount?: boolean
   paymentCash?: boolean
   paymentChange?: boolean
@@ -716,6 +752,7 @@ export type ordersSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type ordersSelectScalar = {
   id?: boolean
   userId?: boolean
+  customerName?: boolean
   totalAmount?: boolean
   paymentCash?: boolean
   paymentChange?: boolean
@@ -723,7 +760,7 @@ export type ordersSelectScalar = {
   createdAt?: boolean
 }
 
-export type ordersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "totalAmount" | "paymentCash" | "paymentChange" | "status" | "createdAt", ExtArgs["result"]["orders"]>
+export type ordersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "customerName" | "totalAmount" | "paymentCash" | "paymentChange" | "status" | "createdAt", ExtArgs["result"]["orders"]>
 export type ordersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.usersDefaultArgs<ExtArgs>
   items?: boolean | Prisma.orders$itemsArgs<ExtArgs>
@@ -745,6 +782,7 @@ export type $ordersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     userId: number
+    customerName: string
     totalAmount: number
     paymentCash: number
     paymentChange: number
@@ -1177,6 +1215,7 @@ export interface Prisma__ordersClient<T, Null = never, ExtArgs extends runtime.T
 export interface ordersFieldRefs {
   readonly id: Prisma.FieldRef<"orders", 'Int'>
   readonly userId: Prisma.FieldRef<"orders", 'Int'>
+  readonly customerName: Prisma.FieldRef<"orders", 'String'>
   readonly totalAmount: Prisma.FieldRef<"orders", 'Int'>
   readonly paymentCash: Prisma.FieldRef<"orders", 'Int'>
   readonly paymentChange: Prisma.FieldRef<"orders", 'Int'>

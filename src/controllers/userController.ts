@@ -33,7 +33,7 @@ export const userController = {
       const userId = Number(req.params.id);
       const userData = {
         ...req.body,
-        shift: req.body.shift === "Siang" ? "DAY" : "NIGHT",
+        shift: req.body.shift ? req.body.shift === "Siang" ? "DAY" : "NIGHT" : undefined,
       };
       const updatedUser = await userService.updateUser(userId, userData);
       res.status(200).json({ message: "User updated successfully", updatedUser });
